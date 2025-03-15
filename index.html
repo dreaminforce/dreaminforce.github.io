@@ -1,1 +1,354 @@
-"Hello World" 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NavForce - Salesforce Navigator Documentation</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    header .header-left {
+      display: flex;
+      align-items: center;
+    }
+    header img {
+      border-radius: 5px;
+      margin-right: 15px;
+    }
+    header h1 {
+      font-size: 1.8em;
+      margin-right: 15px;
+    }
+    header .version-tag {
+      background: #ffcc00;
+      color: #333;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+    /* Layout: Sidebar + Content */
+    .container {
+      display: flex;
+      margin-top: 20px;
+    }
+    /* Sidebar for Versions */
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+      height: calc(100vh - 70px);
+      position: sticky;
+      top: 70px;
+    }
+    .sidebar h3 {
+      margin-bottom: 15px;
+      color: #4b6cb7;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+    .sidebar a {
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .sidebar a:hover {
+      color: #4b6cb7;
+    }
+    .sidebar .active a {
+      color: #4b6cb7;
+      font-weight: bold;
+    }
+    /* Main Content */
+    .content {
+      flex: 1;
+      padding: 20px 40px;
+    }
+    .feature-nav {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .feature-nav a {
+      color: #4b6cb7;
+      margin: 0 15px;
+      font-size: 1.1em;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .feature-nav a:hover {
+      color: #182848;
+    }
+    .feature-section {
+      background: #fff;
+      padding: 30px;
+      margin-bottom: 60px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .feature-section h2 {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+      color: #4b6cb7;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    .feature-description {
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+    .feature-details {
+      margin-left: 20px;
+      padding-left: 20px;
+      border-left: 3px solid #eee;
+    }
+    .feature-details ul {
+      list-style: disc;
+      margin-top: 10px;
+    }
+    .feature-details li {
+      margin-bottom: 8px;
+    }
+    /* Back-to-top button */
+    .back-to-top {
+      display: block;
+      width: 150px;
+      margin: 30px auto;
+      padding: 10px;
+      text-align: center;
+      background: #4b6cb7;
+      color: #fff;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .back-to-top:hover {
+      background: #182848;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+    /* Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    /* Responsive Design */
+    @media (max-width: 800px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+      .content {
+        padding: 20px;
+      }
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      header .header-left {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <a href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank">
+        <img src="https://lh3.googleusercontent.com/1mqhqozLzlKWRUk2UovPJyse6TmcnEbAikyQi14M6Wbm9l2k-M4V6Grz4dVKmw_B0FYAulZPJk6i3-29mJk9p2qJ1Q=s60" alt="NavForce Logo">
+      </a>
+      <h1>NavForce - Salesforce Navigator</h1>
+    </div>
+    <span class="version-tag">Version 0.7.2</span>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar: Versions List -->
+    <aside class="sidebar">
+      <h3>Versions</h3>
+      <ul>
+        <li class="active"><a href="#">0.7.2</a></li>
+      </ul>
+    </aside>
+    <!-- Main Documentation Content -->
+    <div class="content">
+      <!-- Feature Navigation (Index) -->
+      <nav class="feature-nav">
+        <a href="#apex">Apex</a>
+        <a href="#flows">Flows</a>
+        <a href="#debug">Debug</a>
+        <a href="#apex-changes">Apex Changes</a>
+        <a href="#sites">Sites</a>
+        <a href="#branding">Branding</a>
+      </nav>
+
+      <!-- Apex Section -->
+      <section id="apex" class="feature-section">
+        <h2>Apex</h2>
+        <div class="feature-description">
+          <p>Includes search functionality, refresh/resync icons, and detailed views for Apex Classes, Test Classes, and Triggers. Options include viewing test coverage and related test classes.</p>
+        </div>
+        <div class="feature-details">
+          <ul>
+            <li><strong>Search Bar:</strong> Quickly search through Apex elements.</li>
+            <li><strong>Refresh/Resync Icon:</strong> Update your data with one click.</li>
+            <li><strong>Apex Classes:</strong> View classes and their details.
+              <ul>
+                <li>Covering Test Classes Toggle</li>
+                <li>Test Coverage Percentage</li>
+              </ul>
+            </li>
+            <li><strong>Test Class:</strong> Filter and view test classes with detailed results.
+              <ul>
+                <li>Covered Class/Trigger Toggle</li>
+                <li>Run Test Class with method status details</li>
+              </ul>
+            </li>
+            <li><strong>Triggers:</strong> Manage triggers with filtering and coverage info.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Flows Section -->
+      <section id="flows" class="feature-section">
+        <h2>Flows</h2>
+        <div class="feature-description">
+          <p>Manage your flows with a search bar, refresh options, and a list that shows active flows including Process Builders, AutoLaunched, and Screen flows. Filters help identify active versus inactive statuses.</p>
+        </div>
+        <div class="feature-details">
+          <ul>
+            <li><strong>Search Bar:</strong> Locate flows quickly.</li>
+            <li><strong>Refresh/Resync Icon:</strong> Synchronize flow data.</li>
+            <li><strong>All Active Flows:</strong> Default list with details.
+              <ul>
+                <li>Inactive Checkbox Filter</li>
+                <li>Process Builders list (PB)</li>
+                <li>AutoLaunched and Screen flows</li>
+                <li>Icons for Process Type and Active/Inactive status</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Debug Section -->
+      <section id="debug" class="feature-section">
+        <h2>Debug</h2>
+        <div class="feature-description">
+          <p>Track and analyze your debug traces. Easily search, refresh, and inspect logs with details like start/end dates and tracking status.</p>
+        </div>
+        <div class="feature-details">
+          <ul>
+            <li><strong>Search Bar:</strong> Find specific debug traces.</li>
+            <li><strong>Refresh/Resync Icon:</strong> Update trace logs instantly.</li>
+            <li><strong>All Debug Traces:</strong> Detailed view of debug logs.
+              <ul>
+                <li>Information Icon for start/end dates</li>
+                <li>Tracking Icon for active trace status</li>
+                <li>Refresh TraceFlag Icon for extending trace duration</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Apex Changes Section -->
+      <section id="apex-changes" class="feature-section">
+        <h2>Apex Changes</h2>
+        <div class="feature-description">
+          <p>Provides version control for your Apex classes. Easily compare different working copies with version toggles and detailed change logs.</p>
+        </div>
+        <div class="feature-details">
+          <ul>
+            <li><strong>Search Bar:</strong> Quickly locate working copies.</li>
+            <li><strong>Refresh/Resync Icon:</strong> Get the latest changes.</li>
+            <li><strong>Working Copy of Apex Classes:</strong>
+              <ul>
+                <li>Toggle Version Icon to view various versions</li>
+                <li>Select and compare versions via a dedicated interface</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Sites Section -->
+      <section id="sites" class="feature-section">
+        <h2>Sites</h2>
+        <div class="feature-description">
+          <p>Displays all Experience Sites in your org. Provides direct links to both the Builder and Workspace for easy management.</p>
+        </div>
+        <div class="feature-details">
+          <ul>
+            <li><strong>Search Bar:</strong> Quickly search for sites.</li>
+            <li><strong>Refresh/Resync Icon:</strong> Update site information.</li>
+            <li><strong>All Experience Sites:</strong> List view with direct links to Builder and Workspace.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Branding Section -->
+      <section id="branding" class="feature-section">
+        <h2>Branding</h2>
+        <div class="feature-description">
+          <p>Customize your experience with the Branding section. It displays your logo, organisation details, user info, and settings for tailoring the extension’s appearance and behavior.</p>
+        </div>
+        <div class="feature-details">
+          <ul>
+            <li><strong>Navforce Logo:</strong> Redirects to the personal blog.</li>
+            <li><strong>Organisation Name:</strong> Displays instance details on hover.</li>
+            <li><strong>Current User Details:</strong> Shows user name and email on hover.</li>
+            <li><strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible.</li>
+            <li><strong>Settings:</strong> Options to disable code coverage highlight and configure sorting orders.</li>
+          </ul>
+        </div>
+      </section>
+
+      <a href="#apex" class="back-to-top">Back to Top</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 NavForce - Salesforce Navigator Documentation. All rights reserved.</p>
+  </footer>
+</body>
+</html>
