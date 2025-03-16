@@ -118,9 +118,12 @@
     .sidebar h3 {
       margin-bottom: 15px;
       color: #0bec96;
+      font-size: 1.2em;
     }
-    .sidebar ul {
-      list-style: none;
+    .sidebar ol {
+      list-style: decimal;
+      margin-left: 20px;
+      padding-left: 20px;
     }
     .sidebar li {
       margin-bottom: 10px;
@@ -181,12 +184,29 @@
       padding-left: 20px;
       border-left: 3px solid #eee;
     }
-    .feature-details ul {
-      list-style: disc;
-      margin-top: 10px;
+    /* Ordered Lists Styling for Feature Details */
+    .feature-details ol {
+      margin: 10px 0 10px 20px;
+      padding-left: 20px;
     }
     .feature-details li {
       margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    /* Nested ordered list styling */
+    .feature-details ol ol {
+      margin-left: 20px;
+      font-size: 0.95em;
+    }
+    /* Changelog Ordered List */
+    .changelog ol {
+      margin: 10px 0 10px 20px;
+      padding-left: 20px;
+    }
+    .changelog li {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
     }
     /* Demo Section */
     .demo-container {
@@ -198,19 +218,6 @@
       height: 450px;
       border: none;
       border-radius: 8px;
-    }
-    /* Changelog & Roadmap Section */
-    .changelog {
-      padding: 20px;
-    }
-    .changelog ul {
-      list-style: none;
-      padding-left: 20px;
-    }
-    .changelog li {
-      margin-bottom: 10px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 10px;
     }
     /* Feedback/Contact Section */
     .feedback {
@@ -300,9 +307,9 @@
     <!-- Sidebar: Versions List -->
     <aside class="sidebar">
       <h3>Versions</h3>
-      <ul>
+      <ol>
         <li class="active"><a href="#">0.7.2</a></li>
-      </ul>
+      </ol>
     </aside>
 
     <!-- Main Documentation Content -->
@@ -319,124 +326,182 @@
         <a href="#changelog">Changelog</a>
       </nav>
 
-      <!-- Feature Sections (Static Cards) -->
+      <!-- Feature Sections -->
+
+      <!-- Apex Section -->
       <section id="apex" class="feature-section">
         <h2>Apex</h2>
         <div class="feature-description">
-          <p>Includes search functionality, refresh/resync icons, and detailed views for Apex Classes, Test Classes, and Triggers. Options include viewing test coverage and related test classes.</p>
+          <p>Manage and test your Apex code with powerful search, refresh, and detailed view options.</p>
         </div>
         <div class="feature-details">
-          <ul>
-            <li><strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive. It will only search though the item for which the filter is selected.<br>
-            Which means, if no neither of Apex Test Classes or Apex Trigger checkbox is selected, it will search through only Apex Classes(Non Test Classes). Meanshile if I select
-            Apex Test Classes, it will search through only Apex Test Classes and same for Apex Triggers.
-          </li>
+          <ol>
+            <li>
+              <strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive and will only search the item for which the filter is selected. For example, if neither the Apex Test Classes nor the Apex Trigger checkbox is selected, it will search only through Apex Classes (Non Test Classes). If you select Apex Test Classes, it searches only within those, and similarly for Apex Triggers.
             </li>
-            <li><strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, try to use this REFRESH icon to resync the data from your salesforce org.</li>
-            <li><strong>Apex Classes:</strong> This is the default view when the extension loads or if someone clicks on.
-              <ul>
-                <li>Covering Test Classes Toggle</li>
-                <li>Test Coverage Percentage</li>
-              </ul>
+            <li>
+              <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, click the REFRESH icon to resync the data from your Salesforce org.
             </li>
-            <li><strong>Test Class:</strong> Filter and view test classes with detailed results.
-              <ul>
-                <li>Covered Class/Trigger Toggle</li>
-                <li>Run Test Class with method status details</li>
-              </ul>
+            <li>
+              <strong>Apex Classes:</strong> This is the default view when the extension loads. It shows all the Apex Classes (non test classes) in the org. This list has three features:
+              <ol>
+                <li><em>Covering Test Classes:</em> A toggle which, when expanded, shows all the Apex Test Classes covering this particular Apex Class.</li>
+                <li><em>Other Details:</em> TBD – more details regarding the Apex Class.</li>
+                <li><em>Test Coverage Percentage:</em> Displays the test coverage percentage of the Apex Class.</li>
+              </ol>
             </li>
-            <li><strong>Triggers:</strong> Manage triggers with filtering and coverage info.</li>
-          </ul>
+            <li>
+              <strong>Test Class:</strong> A filter checkbox for showing all Apex Test Classes. This list has three features:
+              <ol>
+                <li><em>Covered Class/Trigger:</em> A toggle which, when expanded, shows which Apex Classes and Apex Triggers this Apex Test Class is covering.</li>
+                <li><em>Other Details:</em> TBD – more details regarding the Test Class.</li>
+                <li><em>Run Test Class:</em> When clicked, runs the test class and shows the test results in the extension. The results display the Test Method Name with Pass/Fail status; clicking the status redirects to the detailed test result page.</li>
+              </ol>
+            </li>
+            <li>
+              <strong>Triggers:</strong> A filter checkbox for showing all Apex Triggers. This list has three features:
+              <ol>
+                <li><em>Covering Test Classes:</em> Displays which Apex Classes are covering this particular trigger.</li>
+                <li><em>Other Details:</em> TBD – more details regarding the Apex Trigger.</li>
+                <li><em>Test Coverage Percentage:</em> Shows the test coverage percentage of the Apex Trigger.</li>
+              </ol>
+            </li>
+          </ol>
         </div>
       </section>
 
+      <!-- Flows Section -->
       <section id="flows" class="feature-section">
         <h2>Flows</h2>
         <div class="feature-description">
-          <p>Manage your flows with a search bar, refresh options, and a list that shows active flows including Process Builders, AutoLaunched, and Screen flows. Filters help identify active versus inactive statuses.</p>
+          <p>Effortlessly manage and view your flows with built-in search and refresh capabilities, along with detailed filters.</p>
         </div>
         <div class="feature-details">
-          <ul>
-            <li><strong>Search Bar:</strong> Locate flows quickly.</li>
-            <li><strong>Refresh/Resync Icon:</strong> Synchronize flow data.</li>
-            <li><strong>All Active Flows:</strong> Default list with details.
-              <ul>
-                <li>Inactive Checkbox Filter</li>
-                <li>Process Builders list (PB)</li>
-                <li>AutoLaunched and Screen flows</li>
-                <li>Icons for Process Type and Active/Inactive status</li>
-              </ul>
+          <ol>
+            <li>
+              <strong>Search Bar:</strong> Quickly search through Flows. This search is case insensitive. By default, if no filter checkbox is selected, it will search only through Active Flows of all types. When a filter checkbox is selected, it searches only within that specific category.
             </li>
-          </ul>
+            <li>
+              <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Flows, click the REFRESH icon to resync the data from your Salesforce org.
+            </li>
+            <li>
+              <strong>All Active Flows:</strong> The default list when the Flows section is clicked. Clicking on any flow redirects to its details page. This list has several features:
+              <ol>
+                <li><em>Inactive Checkbox Filter:</em> Toggle to show inactive flows.</li>
+                <li><em>PB (Process Builders):</em> Lists all active Process Builders and redirects to the Process Builder page.</li>
+                <li><em>AutoLaunched:</em> Lists all active AutoLaunched flows.</li>
+                <li><em>Screen:</em> Lists all active Screen flows.</li>
+                <li><em>Icons:</em> Two icons indicate the Process Type and Active/Inactive status.</li>
+              </ol>
+            </li>
+          </ol>
         </div>
       </section>
 
+      <!-- Debug Section -->
       <section id="debug" class="feature-section">
         <h2>Debug</h2>
         <div class="feature-description">
-          <p>Track and analyze your debug traces. Easily search, refresh, and inspect logs with details like start/end dates and tracking status.</p>
+          <p>Easily track and analyze debug traces from your Salesforce org.</p>
         </div>
         <div class="feature-details">
-          <ul>
-            <li><strong>Search Bar:</strong> Find specific debug traces.</li>
-            <li><strong>Refresh/Resync Icon:</strong> Update trace logs instantly.</li>
-            <li><strong>All Debug Traces:</strong> Detailed view of debug logs.
-              <ul>
-                <li>Information Icon for start/end dates</li>
-                <li>Tracking Icon for active trace status</li>
-                <li>Refresh TraceFlag Icon for extending trace duration</li>
-              </ul>
+          <ol>
+            <li>
+              <strong>Search Bar:</strong> Quickly search through Debug Traces (case insensitive), specifically searching for TracedEntityId.Name.
             </li>
-          </ul>
+            <li>
+              <strong>Refresh/Resync Icon:</strong> If debug data isn’t updating, click the REFRESH icon to resync data from your Salesforce org.
+            </li>
+            <li>
+              <strong>All Debug Traces:</strong> Displays a default list of debug traces including information such as TracedEntityId.Name and Debug level. This list has three features:
+              <ol>
+                <li><em>Information Icon:</em> When hovered over, shows the start and end dates of a debug trace.</li>
+                <li><em>Tracking Icon:</em> Indicates whether the debug trace is actively tracking.</li>
+                <li><em>Refresh TraceFlag Icon:</em> Refreshes the trace flag by 24 hours.</li>
+              </ol>
+            </li>
+          </ol>
         </div>
       </section>
 
+      <!-- Apex Changes Section -->
       <section id="apex-changes" class="feature-section">
         <h2>Apex Changes</h2>
         <div class="feature-description">
-          <p>Provides version control for your Apex classes. Easily compare different working copies with version toggles and detailed change logs.</p>
+          <p>Track changes in your Apex Classes with version control, enabling easy comparisons between different versions.</p>
         </div>
         <div class="feature-details">
-          <ul>
-            <li><strong>Search Bar:</strong> Quickly locate working copies.</li>
-            <li><strong>Refresh/Resync Icon:</strong> Get the latest changes.</li>
-            <li><strong>Working Copy of Apex Classes:</strong>
-              <ul>
-                <li>Toggle Version Icon to view various versions</li>
-                <li>Select and compare versions via a dedicated interface</li>
-              </ul>
+          <ol>
+            <li>
+              <strong>Search Bar:</strong> Quickly search through Apex Classes whose versions are being tracked via ApexClassMember Changes. This search is case insensitive and looks for the Apex Class Name.
             </li>
-          </ul>
+            <li>
+              <strong>Refresh/Resync Icon:</strong> If data is not updating, click the REFRESH icon to resync. If data still doesn’t appear, it means the class isn’t being tracked.
+            </li>
+            <li>
+              <strong>Apex Changes List:</strong> Displays all Apex Classes whose versions are tracked. This list has two features:
+              <ol>
+                <li><em>Toggle Version Icon:</em> View all versions that are being edited, saved, or compiled, along with details like Apex Version Number and Last Sync Date.</li>
+                <li><em>Difference Check:</em> When two versions are selected, click 'Compare Diff' to view differences in color.</li>
+              </ol>
+            </li>
+          </ol>
         </div>
       </section>
 
+      <!-- Sites Section -->
       <section id="sites" class="feature-section">
         <h2>Sites</h2>
         <div class="feature-description">
-          <p>Displays all Experience Sites in your org. Provides direct links to both the Builder and Workspace for easy management.</p>
+          <p>View and manage all Experience Sites in your org with direct links to both the Builder and Workspace.</p>
         </div>
         <div class="feature-details">
-          <ul>
-            <li><strong>Search Bar:</strong> Quickly search for sites.</li>
-            <li><strong>Refresh/Resync Icon:</strong> Update site information.</li>
-            <li><strong>All Experience Sites:</strong> List view with direct links to Builder and Workspace.</li>
-          </ul>
+          <ol>
+            <li>
+              <strong>Search Bar:</strong> Quickly search through Sites. This search is case insensitive and looks for the Site Name.
+            </li>
+            <li>
+              <strong>Refresh/Resync Icon:</strong> If site data isn’t updating, click the REFRESH icon to resync the data from your Salesforce org.
+            </li>
+            <li>
+              <strong>All Experience Sites:</strong> Displays a default list of Experience Sites. This list has one feature:
+              <ol>
+                <li><em>Site Name with Two Links:</em> Each site displays two links—one for the Builder (redirects to the Builder page) and one for the Workspace.</li>
+              </ol>
+            </li>
+          </ol>
         </div>
       </section>
 
+      <!-- Branding Section -->
       <section id="branding" class="feature-section">
         <h2>Branding</h2>
         <div class="feature-description">
-          <p>Customize your experience with the Branding section. It displays your logo, organisation details, user info, and settings for tailoring the extension’s appearance and behavior.</p>
+          <p>Customize the look and feel of the extension with your branding details.</p>
         </div>
         <div class="feature-details">
-          <ul>
-            <li><strong>Navforce Logo:</strong> Redirects to the personal blog.</li>
-            <li><strong>Organisation Name:</strong> Displays instance details on hover.</li>
-            <li><strong>Current User Details:</strong> Shows user name and email on hover.</li>
-            <li><strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible.</li>
-            <li><strong>Settings:</strong> Options to disable code coverage highlight and configure sorting orders.</li>
-          </ul>
+          <ol>
+            <li>
+              <strong>Navforce Logo:</strong> Redirects to your personal blog.
+            </li>
+            <li>
+              <strong>Organisation Name:</strong> Displays instance details on hover (if in a sandbox, it shows the sandbox name).
+            </li>
+            <li>
+              <strong>Current User Details:</strong> The current user’s name is shown on a button; hovering over it reveals the user’s email.
+            </li>
+            <li>
+              <strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible. If unpinned, the sidebar auto-slides back in 5 seconds; if pinned, it stays open.
+            </li>
+            <li>
+              <strong>Settings:</strong>
+              <ol>
+                <li><em>Disable Code Coverage Highlight:</em> By default in Classic Salesforce, code coverage is highlighted in green and red.</li>
+                <li><em>Sort Order for Apex (Classes &amp; Triggers):</em> Configure how Apex items are sorted.</li>
+                <li><em>Sort Order for Flows:</em> Configure the sorting order for flows.</li>
+              </ol>
+            </li>
+          </ol>
         </div>
       </section>
 
@@ -453,9 +518,9 @@
       <section id="changelog" class="feature-section">
         <h2>Changelog & Roadmap</h2>
         <div class="changelog">
-          <ul>
+          <ol>
             <li>
-              <strong>Version 0.7.2</strong> - Latest features added including enhanced Apex, Flows, Debug views, and more.
+              <strong>Version 0.7.2:</strong> Latest features added including enhanced Apex, Flows, Debug views, and more.
             </li>
             <li>
               <strong>Planned:</strong> More detailed comparisons, enhanced user settings, and additional integrations.
@@ -463,7 +528,7 @@
             <li>
               <strong>Bug Fixes:</strong> Ongoing improvements to stability and performance.
             </li>
-          </ul>
+          </ol>
         </div>
       </section>
 
