@@ -7,7 +7,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
   <style>
-    /* Global Styles */
+    /* Global Reset and Base Styles */
     * {
       margin: 0;
       padding: 0;
@@ -18,10 +18,30 @@
       background: #f9f9f9;
       color: #333;
       line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
     }
     a {
       text-decoration: none;
       color: inherit;
+    }
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #2e2e2e;
+      color: #ddd;
+    }
+    body.dark-mode header {
+      background: linear-gradient(135deg, #333, #111);
+    }
+    body.dark-mode .sidebar,
+    body.dark-mode .content,
+    body.dark-mode .feature-section {
+      background: #3e3e3e;
+      border-color: #555;
+    }
+    body.dark-mode .feature-nav a,
+    body.dark-mode header h1,
+    body.dark-mode .sidebar h3 {
+      color: #ffcc00;
     }
     /* Header */
     header {
@@ -32,26 +52,53 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    header .header-left {
+    .header-left {
       display: flex;
       align-items: center;
     }
-    header img {
+    .header-left img {
       border-radius: 5px;
       margin-right: 15px;
     }
-    header h1 {
+    .header-left h1 {
       font-size: 1.8em;
       margin-right: 15px;
     }
-    header .version-tag {
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+    .version-tag {
       background: #ffcc00;
       color: #333;
       padding: 5px 10px;
       border-radius: 5px;
       font-weight: bold;
       font-size: 0.9em;
+      margin-right: 10px;
+    }
+    /* Dark Mode Toggle Button */
+    #theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      padding: 5px;
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+    #theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    #theme-toggle svg {
+      width: 100%;
+      height: 100%;
     }
     /* Layout: Sidebar + Content */
     .container {
@@ -70,7 +117,7 @@
     }
     .sidebar h3 {
       margin-bottom: 15px;
-      color: #4b6cb7;
+      color: #0bec96;
     }
     .sidebar ul {
       list-style: none;
@@ -95,6 +142,7 @@
       flex: 1;
       padding: 20px 40px;
     }
+    /* Feature Navigation */
     .feature-nav {
       text-align: center;
       margin-bottom: 40px;
@@ -109,6 +157,7 @@
     .feature-nav a:hover {
       color: #182848;
     }
+    /* Feature Section Cards */
     .feature-section {
       background: #fff;
       padding: 30px;
@@ -119,7 +168,7 @@
     .feature-section h2 {
       font-size: 1.8em;
       margin-bottom: 15px;
-      color: #4b6cb7;
+      color: #24bfb0;
       border-bottom: 2px solid #eee;
       padding-bottom: 10px;
     }
@@ -139,7 +188,47 @@
     .feature-details li {
       margin-bottom: 8px;
     }
-    /* Back-to-top button */
+    /* Demo Section */
+    .demo-container {
+      text-align: center;
+    }
+    .demo-container iframe {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      border: none;
+      border-radius: 8px;
+    }
+    /* Changelog & Roadmap Section */
+    .changelog {
+      padding: 20px;
+    }
+    .changelog ul {
+      list-style: none;
+      padding-left: 20px;
+    }
+    .changelog li {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+    /* Feedback/Contact Section */
+    .feedback {
+      text-align: center;
+      padding: 20px;
+    }
+    .feedback a {
+      background: #4b6cb7;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .feedback a:hover {
+      background: #182848;
+    }
+    /* Back-to-top Button */
     .back-to-top {
       display: block;
       width: 150px;
@@ -184,8 +273,11 @@
         flex-direction: column;
         text-align: center;
       }
-      header .header-left {
+      .header-left {
         margin-bottom: 10px;
+      }
+      .header-right {
+        justify-content: center;
       }
     }
   </style>
@@ -198,7 +290,10 @@
       </a>
       <h1>NavForce - Salesforce Navigator</h1>
     </div>
-    <span class="version-tag">Version 0.7.2</span>
+    <div class="header-right">
+      <span class="version-tag">Version 0.7.2</span>
+      <button id="theme-toggle" title="Toggle Dark Mode"></button>
+    </div>
   </header>
 
   <div class="container">
@@ -209,6 +304,7 @@
         <li class="active"><a href="#">0.7.2</a></li>
       </ul>
     </aside>
+
     <!-- Main Documentation Content -->
     <div class="content">
       <!-- Feature Navigation (Index) -->
@@ -219,9 +315,11 @@
         <a href="#apex-changes">Apex Changes</a>
         <a href="#sites">Sites</a>
         <a href="#branding">Branding</a>
+        <a href="#demo">Demo</a>
+        <a href="#changelog">Changelog</a>
       </nav>
 
-      <!-- Apex Section -->
+      <!-- Feature Sections (Static Cards) -->
       <section id="apex" class="feature-section">
         <h2>Apex</h2>
         <div class="feature-description">
@@ -229,9 +327,13 @@
         </div>
         <div class="feature-details">
           <ul>
-            <li><strong>Search Bar:</strong> Quickly search through Apex elements.</li>
-            <li><strong>Refresh/Resync Icon:</strong> Update your data with one click.</li>
-            <li><strong>Apex Classes:</strong> View classes and their details.
+            <li><strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive. It will only search though the item for which the filter is selected.<br>
+            Which means, if no neither of Apex Test Classes or Apex Trigger checkbox is selected, it will search through only Apex Classes(Non Test Classes). Meanshile if I select
+            Apex Test Classes, it will search through only Apex Test Classes and same for Apex Triggers.
+          </li>
+            </li>
+            <li><strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, try to use this REFRESH icon to resync the data from your salesforce org.</li>
+            <li><strong>Apex Classes:</strong> This is the default view when the extension loads or if someone clicks on.
               <ul>
                 <li>Covering Test Classes Toggle</li>
                 <li>Test Coverage Percentage</li>
@@ -248,7 +350,6 @@
         </div>
       </section>
 
-      <!-- Flows Section -->
       <section id="flows" class="feature-section">
         <h2>Flows</h2>
         <div class="feature-description">
@@ -270,7 +371,6 @@
         </div>
       </section>
 
-      <!-- Debug Section -->
       <section id="debug" class="feature-section">
         <h2>Debug</h2>
         <div class="feature-description">
@@ -291,7 +391,6 @@
         </div>
       </section>
 
-      <!-- Apex Changes Section -->
       <section id="apex-changes" class="feature-section">
         <h2>Apex Changes</h2>
         <div class="feature-description">
@@ -311,7 +410,6 @@
         </div>
       </section>
 
-      <!-- Sites Section -->
       <section id="sites" class="feature-section">
         <h2>Sites</h2>
         <div class="feature-description">
@@ -326,7 +424,6 @@
         </div>
       </section>
 
-      <!-- Branding Section -->
       <section id="branding" class="feature-section">
         <h2>Branding</h2>
         <div class="feature-description">
@@ -343,6 +440,33 @@
         </div>
       </section>
 
+      <!-- Interactive Demo Section -->
+      <section id="demo" class="feature-section">
+        <h2>Interactive Demo</h2>
+        <div class="demo-container">
+          <p>Watch this short demo to see NavForce in action:</p>
+          <iframe src="https://www.youtube.com/embed/q0b6B6fNanU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </section>
+
+      <!-- Changelog & Roadmap Section -->
+      <section id="changelog" class="feature-section">
+        <h2>Changelog & Roadmap</h2>
+        <div class="changelog">
+          <ul>
+            <li>
+              <strong>Version 0.7.2</strong> - Latest features added including enhanced Apex, Flows, Debug views, and more.
+            </li>
+            <li>
+              <strong>Planned:</strong> More detailed comparisons, enhanced user settings, and additional integrations.
+            </li>
+            <li>
+              <strong>Bug Fixes:</strong> Ongoing improvements to stability and performance.
+            </li>
+          </ul>
+        </div>
+      </section>
+
       <a href="#apex" class="back-to-top">Back to Top</a>
     </div>
   </div>
@@ -350,5 +474,37 @@
   <footer>
     <p>&copy; 2025 NavForce - Salesforce Navigator Documentation. All rights reserved.</p>
   </footer>
+
+  <!-- JavaScript for Theme Toggle with SVG Swap -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    // SVG for light mode (when page is in light mode, clicking it will switch to dark mode)
+    const lightModeSVG = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 3C2.23858 3 0 5.23858 0 8C0 10.7614 2.23858 13 5 13H11C13.7614 13 16 10.7614 16 8C16 5.23858 13.7614 3 11 3H5ZM5 5C3.34315 5 2 6.34315 2 8C2 9.65685 3.34315 11 5 11C6.65685 11 8 9.65685 8 8C8 6.34315 6.65685 5 5 5Z" fill="#24bfb0"></path>
+      </g>
+    </svg>`;
+    // SVG for dark mode (when page is in dark mode, clicking it will revert to light mode)
+    const darkModeSVG = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_iconCarrier">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M11 3C13.7614 3 16 5.23858 16 8C16 10.7614 13.7614 13 11 13H5C2.23858 13 0 10.7614 0 8C0 5.23858 2.23858 3 5 3H11ZM11 5C12.6569 5 14 6.34315 14 8C14 9.65685 12.6569 11 11 11C9.34315 11 8 9.65685 8 8C8 6.34315 9.34315 5 11 5Z" fill="#24bfb0"></path>
+      </g>
+    </svg>`;
+    // Initialize the button with the lightModeSVG (since page loads in light mode)
+    themeToggle.innerHTML = lightModeSVG;
+    
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if(document.body.classList.contains('dark-mode')){
+        themeToggle.innerHTML = darkModeSVG;
+      } else {
+        themeToggle.innerHTML = lightModeSVG;
+      }
+    });
+  </script>
 </body>
 </html>
