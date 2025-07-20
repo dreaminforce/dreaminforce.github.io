@@ -1,778 +1,1061 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NavForce - Salesforce Navigator Documentation</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-  <style>
-    /* Global Reset and Base Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: #f9f9f9;
-      color: #333;
-      line-height: 1.6;
-      transition: background 0.3s, color 0.3s;
-    }
-    a { text-decoration: none; color: inherit; }
-    /* Dark Mode Styles */
-    body.dark-mode {
-      background: #2e2e2e;
-      color: #ddd;
-    }
-    body.dark-mode header { background: linear-gradient(135deg, #333, #111); }
-    body.dark-mode .sidebar,
-    body.dark-mode .content,
-    body.dark-mode .feature-section { background: #3e3e3e; border-color: #555; }
-    body.dark-mode .feature-nav a,
-    body.dark-mode header h1,
-    body.dark-mode .sidebar h3 { color: #ffcc00; }
-    /* Header */
-    header {
-      background: linear-gradient(135deg, #4b6cb7, #182848);
-      color: #fff;
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .header-left { display: flex; align-items: center; }
-    .header-left img { border-radius: 5px; margin-right: 15px; }
-    .header-left h1 { font-size: 1.8em; margin-right: 15px; }
-    .header-right { display: flex; align-items: center; }
-    .version-tag {
-      background: #ffcc00;
-      color: #333;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 0.9em;
-      margin-right: 10px;
-    }
-    /* Dark Mode Toggle Button */
-    #theme-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      padding: 5px;
-      border-radius: 50%;
-      transition: background 0.3s;
-    }
-    #theme-toggle:hover { background: rgba(255, 255, 255, 0.2); }
-    #theme-toggle svg { width: 100%; height: 100%; }
-    /* Layout: Sidebar + Content */
-    .container { display: flex; margin-top: 20px; }
-    /* Sidebar for Versions */
-    .sidebar {
-      width: 220px;
-      background: #fff;
-      padding: 20px;
-      border-right: 1px solid #ddd;
-      height: calc(100vh - 70px);
-      position: sticky;
-      top: 70px;
-    }
-    .sidebar h3 { margin-bottom: 15px; color: #0bec96; font-size: 1.2em; }
-    .sidebar ol { list-style: decimal; margin-left: 20px; padding-left: 20px; }
-    .sidebar li { margin-bottom: 10px; }
-    .sidebar a {
-      color: #333;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .sidebar a:hover { color: #4b6cb7; }
-    .sidebar .active a {
-      color: #4b6cb7;
-      font-weight: bold;
-    }
-    /* Main Content */
-    .content { flex: 1; padding: 20px 40px; }
-    /* Hide version containers by default */
-    .version-content { display: none; }
-    /* Feature Navigation */
-    .feature-nav { text-align: center; margin-bottom: 40px; }
-    .feature-nav a {
-      color: #4b6cb7;
-      margin: 0 15px;
-      font-size: 1.1em;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .feature-nav a:hover { color: #182848; }
-    /* Feature Section Cards */
-    .feature-section {
-      background: #fff;
-      padding: 30px;
-      margin-bottom: 60px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .feature-section h2 {
-      font-size: 1.8em;
-      margin-bottom: 15px;
-      color: #24bfb0;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-    }
-    .feature-description { margin-bottom: 20px; font-size: 1em; }
-    .feature-details {
-      margin-left: 20px;
-      padding-left: 20px;
-      border-left: 3px solid #eee;
-    }
-    .feature-details ol { margin: 10px 0 10px 20px; padding-left: 20px; }
-    .feature-details li { margin-bottom: 8px; line-height: 1.4; }
-    .feature-details ol ol { margin-left: 20px; font-size: 0.95em; }
-    /* Changelog Ordered List */
-    .changelog ol { margin: 10px 0 10px 20px; padding-left: 20px; }
-    .changelog li {
-      margin-bottom: 10px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 10px;
-    }
-    /* Demo Section */
-    .demo-container { text-align: center; }
-    .demo-container iframe {
-      width: 100%;
-      max-width: 800px;
-      height: 450px;
-      border: none;
-      border-radius: 8px;
-    }
-    /* Feedback/Contact Section */
-    .feedback { text-align: center; padding: 20px; }
-    .feedback a {
-      background: #4b6cb7;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .feedback a:hover { background: #182848; }
-    /* Back-to-top Button */
-    .back-to-top {
-      display: block;
-      width: 150px;
-      margin: 30px auto;
-      padding: 10px;
-      text-align: center;
-      background: #4b6cb7;
-      color: #fff;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    .back-to-top:hover { background: #182848; }
-    /* Footer */
-    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; }
-    /* Smooth Scrolling */
-    html { scroll-behavior: smooth; }
-    /* Responsive Design */
-    @media (max-width: 800px) {
-      .container { flex-direction: column; }
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-      }
-      .content { padding: 20px; }
-      header { flex-direction: column; text-align: center; }
-      .header-left { margin-bottom: 10px; }
-      .header-right { justify-content: center; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NavForce - Salesforce Navigator Documentation</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Reset and Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          font-family: 'Roboto', sans-serif;
+          background: #f9f9f9;
+          color: #333;
+          line-height: 1.6;
+          transition: background 0.3s, color 0.3s;
+        }
+        a { text-decoration: none; color: inherit; }
+        /* Dark Mode Styles */
+        body.dark-mode {
+          background: #2e2e2e;
+          color: #ddd;
+        }
+        body.dark-mode header { background: linear-gradient(135deg, #333, #111); }
+        body.dark-mode .sidebar,
+        body.dark-mode .content,
+        body.dark-mode .feature-section { background: #3e3e3e; border-color: #555; }
+        body.dark-mode .feature-nav a,
+        body.dark-mode header h1,
+        body.dark-mode .sidebar h3 { color: #ffcc00; }
+        /* Header */
+        header {
+          background: linear-gradient(135deg, #4b6cb7, #182848);
+          color: #fff;
+          padding: 15px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; }
+        .header-left img { border-radius: 5px; margin-right: 15px; }
+        .header-left h1 { font-size: 1.8em; margin-right: 15px; }
+        .header-right { display: flex; align-items: center; }
+        .version-tag {
+          background: #ffcc00;
+          color: #333;
+          padding: 5px 10px;
+          border-radius: 5px;
+          font-weight: bold;
+          font-size: 0.9em;
+          margin-right: 10px;
+        }
+        /* Dark Mode Toggle Button */
+        #theme-toggle {
+          background: none;
+          border: none;
+          cursor: pointer;
+          width: 40px;
+          height: 40px;
+          padding: 5px;
+          border-radius: 50%;
+          transition: background 0.3s;
+        }
+        #theme-toggle:hover { background: rgba(255, 255, 255, 0.2); }
+        #theme-toggle svg { width: 100%; height: 100%; }
+        /* Layout: Sidebar + Content */
+        .container { display: flex; margin-top: 20px; }
+        /* Sidebar for Versions */
+        .sidebar {
+          width: 220px;
+          background: #fff;
+          padding: 20px;
+          border-right: 1px solid #ddd;
+          height: calc(100vh - 70px);
+          position: sticky;
+          top: 70px;
+        }
+        .sidebar h3 { margin-bottom: 15px; color: #0bec96; font-size: 1.2em; }
+        .sidebar ol { list-style: decimal; margin-left: 20px; padding-left: 20px; }
+        .sidebar li { margin-bottom: 10px; }
+        .sidebar a {
+          color: #333;
+          font-weight: 500;
+          transition: color 0.3s;
+        }
+        .sidebar a:hover { color: #4b6cb7; }
+        .sidebar .active a {
+          color: #4b6cb7;
+          font-weight: bold;
+        }
+        /* Main Content */
+        .content { flex: 1; padding: 20px 40px; }
+        /* Hide version containers by default */
+        .version-content { display: none; }
+        /* Feature Navigation */
+        .feature-nav { text-align: center; margin-bottom: 40px; }
+        .feature-nav a {
+          color: #4b6cb7;
+          margin: 0 15px;
+          font-size: 1.1em;
+          font-weight: 500;
+          transition: color 0.3s;
+        }
+        .feature-nav a:hover { color: #182848; }
+        /* Feature Section Cards */
+        .feature-section {
+          background: #fff;
+          padding: 30px;
+          margin-bottom: 60px;
+          border-radius: 8px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .feature-section h2 {
+          font-size: 1.8em;
+          margin-bottom: 15px;
+          color: #24bfb0;
+          border-bottom: 2px solid #eee;
+          padding-bottom: 10px;
+        }
+        .feature-description { margin-bottom: 20px; font-size: 1em; }
+        .feature-details {
+          margin-left: 20px;
+          padding-left: 20px;
+          border-left: 3px solid #eee;
+        }
+        .feature-details ol { margin: 10px 0 10px 20px; padding-left: 20px; }
+        .feature-details li { margin-bottom: 8px; line-height: 1.4; }
+        .feature-details ol ol { margin-left: 20px; font-size: 0.95em; }
+        /* Changelog Ordered List */
+        .changelog ol { margin: 10px 0 10px 20px; padding-left: 20px; }
+        .changelog li {
+          margin-bottom: 10px;
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 10px;
+        }
+        /* Demo Section */
+        .demo-container { text-align: center; }
+        .demo-container iframe {
+          width: 100%;
+          max-width: 800px;
+          height: 450px;
+          border: none;
+          border-radius: 8px;
+        }
+        /* Feedback/Contact Section */
+        .feedback { text-align: center; padding: 20px; }
+        .feedback a {
+          background: #4b6cb7;
+          color: #fff;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-weight: bold;
+          transition: background 0.3s;
+        }
+        .feedback a:hover { background: #182848; }
+        /* Back-to-top Button */
+        .back-to-top {
+          display: block;
+          width: 150px;
+          margin: 30px auto;
+          padding: 10px;
+          text-align: center;
+          background: #4b6cb7;
+          color: #fff;
+          border-radius: 5px;
+          transition: background 0.3s;
+        }
+        .back-to-top:hover { background: #182848; }
+        /* Footer */
+        footer { text-align: center; padding: 20px; font-size: 0.9em; color: #777; }
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+        /* Responsive Design */
+        @media (max-width: 800px) {
+          .container { flex-direction: column; }
+          .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+            border-right: none;
+            border-bottom: 1px solid #ddd;
+          }
+          .content { padding: 20px; }
+          header { flex-direction: column; text-align: center; }
+          .header-left { margin-bottom: 10px; }
+          .header-right { justify-content: center; }
+        }
+    </style>
 </head>
+
 <body>
-  <header>
-    <div class="header-left">
-      <a href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank">
-        <img src="https://lh3.googleusercontent.com/1mqhqozLzlKWRUk2UovPJyse6TmcnEbAikyQi14M6Wbm9l2k-M4V6Grz4dVKmw_B0FYAulZPJk6i3-29mJk9p2qJ1Q=s60" alt="NavForce Logo">
-      </a>
-      <h1>NavForce - Salesforce Navigator</h1>
-    </div>
-    <div class="header-right">
-      <!-- Version tag now uses an id so it can be updated dynamically -->
-      <span id="current-version-tag" class="version-tag">Version 0.8</span>
-      <button id="theme-toggle" title="Toggle Dark Mode"></button>
-    </div>
-  </header>
+    <header>
+        <div class="header-left">
+            <a href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank">
+                <img src="https://lh3.googleusercontent.com/1mqhqozLzlKWRUk2UovPJyse6TmcnEbAikyQi14M6Wbm9l2k-M4V6Grz4dVKmw_B0FYAulZPJk6i3-29mJk9p2qJ1Q=s60" alt="NavForce Logo">
+            </a>
+            <h1>NavForce - Salesforce Navigator</h1>
+        </div>
+        <div class="header-right">
+            <!-- Version tag now uses an id so it can be updated dynamically -->
+            <span id="current-version-tag" class="version-tag">Version 0.8</span>
+            <button id="theme-toggle" title="Toggle Dark Mode"></button>
+        </div>
+    </header>
 
-  <div class="container">
-    <!-- Sidebar: Versions List -->
-    <aside class="sidebar">
-      <h3>Releases</h3>
-      <ol>
-        <li><a href="#" onclick="showVersion('0.7.2')">0.7.2</a></li>
-        <li class="active"><a href="#" onclick="showVersion('0.8')">0.8</a></li>
-      </ol>
-    </aside>
-
-    <!-- Main Documentation Content -->
-    <div class="content">
-      <!-- Version 0.7.2 Documentation -->
-      <div class="version-content" id="version-0.7.2" style="display: none;">
-        <!-- Feature Navigation (Index) -->
-        <nav class="feature-nav">
-          <a href="#apex-0-7-2">Apex</a>
-          <a href="#flows-0-7-2">Flows</a>
-          <a href="#debug-0-7-2">Debug</a>
-          <a href="#apex-changes-0-7-2">Apex Changes</a>
-          <a href="#sites-0-7-2">Sites</a>
-          <a href="#branding-0-7-2">Branding</a>
-          <a href="#demo-0-7-2">Demo</a>
-          <a href="#changelog-0-7-2">Changelog</a>
-        </nav>
-
-        <!-- Apex Section -->
-        <section id="apex-0-7-2" class="feature-section">
-          <h2>Apex</h2>
-          <div class="feature-description">
-            <p>Manage and test your Apex code with powerful search, refresh, and detailed view options.</p>
-          </div>
-          <div class="feature-details">
+    <div class="container">
+        <!-- Sidebar: Versions List -->
+        <aside class="sidebar">
+            <h3>Releases</h3>
             <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive and will only search the item for which the filter is selected. For example, if neither the Apex Test Classes nor the Apex Trigger checkbox is selected, it will search only through Apex Classes (Non Test Classes). If you select Apex Test Classes, it searches only within those, and similarly for Apex Triggers.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, click the REFRESH icon to resync the data from your Salesforce org.
-              </li>
-              <li>
-                <strong>Apex Classes:</strong> This is the default view when the extension loads. It shows all the Apex Classes (non test classes) in the org. This list has three features:
-                <ol>
-                  <li><em>Covering Test Classes:</em> A toggle which, when expanded, shows all the Apex Test Classes covering this particular Apex Class.</li>
-                  <li><em>Other Details:</em> TBD – more details regarding the Apex Class.</li>
-                  <li><em>Test Coverage Percentage:</em> Displays the test coverage percentage of the Apex Class.</li>
-                </ol>
-              </li>
-              <li>
-                <strong>Test Class:</strong> A filter checkbox for showing all Apex Test Classes. This list has three features:
-                <ol>
-                  <li><em>Covered Class/Trigger:</em> A toggle which, when expanded, shows which Apex Classes and Apex Triggers this Apex Test Class is covering.</li>
-                  <li><em>Other Details:</em> TBD – more details regarding the Test Class.</li>
-                  <li><em>Run Test Class:</em> When clicked, runs the test class and shows the test results in the extension. The results display the Test Method Name with Pass/Fail status; clicking the status redirects to the detailed test result page.</li>
-                </ol>
-              </li>
-              <li>
-                <strong>Triggers:</strong> A filter checkbox for showing all Apex Triggers. This list has three features:
-                <ol>
-                  <li><em>Covering Test Classes:</em> Displays which Apex Classes are covering this particular trigger.</li>
-                  <li><em>Other Details:</em> TBD – more details regarding the Apex Trigger.</li>
-                  <li><em>Test Coverage Percentage:</em> Shows the test coverage percentage of the Apex Trigger.</li>
-                </ol>
-              </li>
+                <li><a href="#" onclick="showVersion('0.7.2')">0.7.2</a></li>
+                <li><a href="#" onclick="showVersion('0.8')">0.8</a></li>
+                <li class="active"><a href="#" onclick="showVersion('0.9')">0.9</a></li>
             </ol>
-          </div>
-        </section>
+        </aside>
 
-        <!-- Flows Section -->
-        <section id="flows-0-7-2" class="feature-section">
-          <h2>Flows</h2>
-          <div class="feature-description">
-            <p>Effortlessly manage and view your flows with built-in search and refresh capabilities, along with detailed filters.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Flows. This search is case insensitive. By default, if no filter checkbox is selected, it will search only through Active Flows of all types. When a filter checkbox is selected, it searches only within that specific category.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Flows, click the REFRESH icon to resync the data from your Salesforce org.
-              </li>
-              <li>
-                <strong>All Active Flows:</strong> The default list when the Flows section is clicked. Clicking on any flow redirects to its details page. This list has several features:
-                <ol>
-                  <li><em>Inactive Checkbox Filter:</em> Toggle to show inactive flows.</li>
-                  <li><em>PB (Process Builders):</em> Lists all active Process Builders and redirects to the Process Builder page.</li>
-                  <li><em>AutoLaunched:</em> Lists all active AutoLaunched flows.</li>
-                  <li><em>Screen:</em> Lists all active Screen flows.</li>
-                  <li><em>Icons:</em> Two icons indicate the Process Type and Active/Inactive status.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+        <!-- Main Documentation Content -->
+        <div class="content">
+            <!-- Version 0.7.2 Documentation -->
+            <div class="version-content" id="version-0.7.2" style="display: none;">
+                <!-- Feature Navigation (Index) -->
+                <nav class="feature-nav">
+                    <a href="#apex-0-7-2">Apex</a>
+                    <a href="#flows-0-7-2">Flows</a>
+                    <a href="#debug-0-7-2">Debug</a>
+                    <a href="#apex-changes-0-7-2">Apex Changes</a>
+                    <a href="#sites-0-7-2">Sites</a>
+                    <a href="#branding-0-7-2">Branding</a>
+                    <a href="#demo-0-7-2">Demo</a>
+                    <a href="#changelog-0-7-2">Changelog</a>
+                </nav>
 
-        <!-- Debug Section -->
-        <section id="debug-0-7-2" class="feature-section">
-          <h2>Debug</h2>
-          <div class="feature-description">
-            <p>Easily track and analyze debug traces from your Salesforce org.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Debug Traces (case insensitive), specifically searching for TracedEntityId.Name.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If debug data isn’t updating, click the REFRESH icon to resync data from your Salesforce org.
-              </li>
-              <li>
-                <strong>All Debug Traces:</strong> Displays a default list of debug traces including information such as TracedEntityId.Name and Debug level. This list has three features:
-                <ol>
-                  <li><em>Information Icon:</em> When hovered over, shows the start and end dates of a debug trace.</li>
-                  <li><em>Tracking Icon:</em> Indicates whether the debug trace is actively tracking.</li>
-                  <li><em>Refresh TraceFlag Icon:</em> Refreshes the trace flag by 24 hours.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Apex Section -->
+                <section id="apex-0-7-2" class="feature-section">
+                    <h2>Apex</h2>
+                    <div class="feature-description">
+                        <p>Manage and test your Apex code with powerful search, refresh, and detailed view options.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive and will only search the item for which the filter is selected. For example, if neither the Apex Test Classes nor the Apex Trigger
+                                checkbox is selected, it will search only through Apex Classes (Non Test Classes). If you select Apex Test Classes, it searches only within those, and similarly for Apex Triggers.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>Apex Classes:</strong> This is the default view when the extension loads. It shows all the Apex Classes (non test classes) in the org. This list has three features:
+                                <ol>
+                                    <li><em>Covering Test Classes:</em> A toggle which, when expanded, shows all the Apex Test Classes covering this particular Apex Class.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Apex Class.</li>
+                                    <li><em>Test Coverage Percentage:</em> Displays the test coverage percentage of the Apex Class.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Test Class:</strong> A filter checkbox for showing all Apex Test Classes. This list has three features:
+                                <ol>
+                                    <li><em>Covered Class/Trigger:</em> A toggle which, when expanded, shows which Apex Classes and Apex Triggers this Apex Test Class is covering.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Test Class.</li>
+                                    <li><em>Run Test Class:</em> When clicked, runs the test class and shows the test results in the extension. The results display the Test Method Name with Pass/Fail status; clicking the status redirects to the detailed test
+                                        result page.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Triggers:</strong> A filter checkbox for showing all Apex Triggers. This list has three features:
+                                <ol>
+                                    <li><em>Covering Test Classes:</em> Displays which Apex Classes are covering this particular trigger.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Apex Trigger.</li>
+                                    <li><em>Test Coverage Percentage:</em> Shows the test coverage percentage of the Apex Trigger.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Apex Changes Section -->
-        <section id="apex-changes-0-7-2" class="feature-section">
-          <h2>Apex Changes</h2>
-          <div class="feature-description">
-            <p>Track changes in your Apex Classes with version control, enabling easy comparisons between different versions.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Apex Classes whose versions are being tracked via ApexClassMember Changes. This search is case insensitive and looks for the Apex Class Name.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If data is not updating, click the REFRESH icon to resync. If data still doesn’t appear, it means the class isn’t being tracked.
-              </li>
-              <li>
-                <strong>Apex Changes List:</strong> Displays all Apex Classes whose versions are tracked. This list has two features:
-                <ol>
-                  <li><em>Toggle Version Icon:</em> View all versions that are being edited, saved, or compiled, along with details like Apex Version Number and Last Sync Date.</li>
-                  <li><em>Difference Check:</em> When two versions are selected, click 'Compare Diff' to view differences in color.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Flows Section -->
+                <section id="flows-0-7-2" class="feature-section">
+                    <h2>Flows</h2>
+                    <div class="feature-description">
+                        <p>Effortlessly manage and view your flows with built-in search and refresh capabilities, along with detailed filters.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Flows. This search is case insensitive. By default, if no filter checkbox is selected, it will search only through Active Flows of all types. When a filter checkbox is
+                                selected, it searches only within that specific category.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Flows, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Active Flows:</strong> The default list when the Flows section is clicked. Clicking on any flow redirects to its details page. This list has several features:
+                                <ol>
+                                    <li><em>Inactive Checkbox Filter:</em> Toggle to show inactive flows.</li>
+                                    <li><em>PB (Process Builders):</em> Lists all active Process Builders and redirects to the Process Builder page.</li>
+                                    <li><em>AutoLaunched:</em> Lists all active AutoLaunched flows.</li>
+                                    <li><em>Screen:</em> Lists all active Screen flows.</li>
+                                    <li><em>Icons:</em> Two icons indicate the Process Type and Active/Inactive status.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Sites Section -->
-        <section id="sites-0-7-2" class="feature-section">
-          <h2>Sites</h2>
-          <div class="feature-description">
-            <p>View and manage all Experience Sites in your org with direct links to both the Builder and Workspace.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Sites. This search is case insensitive and looks for the Site Name.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If site data isn’t updating, click the REFRESH icon to resync the data from your Salesforce org.
-              </li>
-              <li>
-                <strong>All Experience Sites:</strong> Displays a default list of Experience Sites. This list has one feature:
-                <ol>
-                  <li><em>Site Name with Two Links:</em> Each site displays two links—one for the Builder (redirects to the Builder page) and one for the Workspace.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Debug Section -->
+                <section id="debug-0-7-2" class="feature-section">
+                    <h2>Debug</h2>
+                    <div class="feature-description">
+                        <p>Easily track and analyze debug traces from your Salesforce org.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Debug Traces (case insensitive), specifically searching for TracedEntityId.Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If debug data isn’t updating, click the REFRESH icon to resync data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Debug Traces:</strong> Displays a default list of debug traces including information such as TracedEntityId.Name and Debug level. This list has three features:
+                                <ol>
+                                    <li><em>Information Icon:</em> When hovered over, shows the start and end dates of a debug trace.</li>
+                                    <li><em>Tracking Icon:</em> Indicates whether the debug trace is actively tracking.</li>
+                                    <li><em>Refresh TraceFlag Icon:</em> Refreshes the trace flag by 24 hours.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Branding Section -->
-        <section id="branding-0-7-2" class="feature-section">
-          <h2>Branding</h2>
-          <div class="feature-description">
-            <p>Customize the look and feel of the extension with your branding details.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Navforce Logo:</strong> Redirects to your personal blog.
-              </li>
-              <li>
-                <strong>Organisation Name:</strong> Displays instance details on hover (if in a sandbox, it shows the sandbox name).
-              </li>
-              <li>
-                <strong>Current User Details:</strong> The current user’s name is shown on a button; hovering over it reveals the user’s email.
-              </li>
-              <li>
-                <strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible. If unpinned, the sidebar auto-slides back in 5 seconds; if pinned, it stays open.
-              </li>
-              <li>
-                <strong>Settings:</strong>
-                <ol>
-                  <li><em>Disable Code Coverage Highlight:</em> By default in Classic Salesforce, code coverage is highlighted in green and red.</li>
-                  <li><em>Sort Order for Apex (Classes &amp; Triggers):</em> Configure how Apex items are sorted.</li>
-                  <li><em>Sort Order for Flows:</em> Configure the sorting order for flows.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Apex Changes Section -->
+                <section id="apex-changes-0-7-2" class="feature-section">
+                    <h2>Apex Changes</h2>
+                    <div class="feature-description">
+                        <p>Track changes in your Apex Classes with version control, enabling easy comparisons between different versions.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Apex Classes whose versions are being tracked via ApexClassMember Changes. This search is case insensitive and looks for the Apex Class Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If data is not updating, click the REFRESH icon to resync. If data still doesn’t appear, it means the class isn’t being tracked.
+                            </li>
+                            <li>
+                                <strong>Apex Changes List:</strong> Displays all Apex Classes whose versions are tracked. This list has two features:
+                                <ol>
+                                    <li><em>Toggle Version Icon:</em> View all versions that are being edited, saved, or compiled, along with details like Apex Version Number and Last Sync Date.</li>
+                                    <li><em>Difference Check:</em> When two versions are selected, click 'Compare Diff' to view differences in color.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Interactive Demo Section -->
-        <section id="demo-0-7-2" class="feature-section">
-          <h2>Interactive Demo</h2>
-          <div class="demo-container">
-            <p>Watch this short demo to see NavForce in action:</p>
-            <iframe src="https://www.youtube.com/embed/q0b6B6fNanU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </section>
+                <!-- Sites Section -->
+                <section id="sites-0-7-2" class="feature-section">
+                    <h2>Sites</h2>
+                    <div class="feature-description">
+                        <p>View and manage all Experience Sites in your org with direct links to both the Builder and Workspace.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Sites. This search is case insensitive and looks for the Site Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If site data isn’t updating, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Experience Sites:</strong> Displays a default list of Experience Sites. This list has one feature:
+                                <ol>
+                                    <li><em>Site Name with Two Links:</em> Each site displays two links—one for the Builder (redirects to the Builder page) and one for the Workspace.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Changelog & Roadmap Section -->
-        <section id="changelog-0-7-2" class="feature-section">
-          <h2>Changelog & Roadmap</h2>
-          <div class="changelog">
-            <ol>
-              <li>
-                <strong>Version 0.7.2:</strong> Latest features added including enhanced Apex, Flows, Debug views, and more.
-              </li>
-              <li>
-                <strong>Planned:</strong> More detailed comparisons, enhanced user settings, and additional integrations.
-              </li>
-              <li>
-                <strong>Bug Fixes:</strong> Ongoing improvements to stability and performance.
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Branding Section -->
+                <section id="branding-0-7-2" class="feature-section">
+                    <h2>Branding</h2>
+                    <div class="feature-description">
+                        <p>Customize the look and feel of the extension with your branding details.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Navforce Logo:</strong> Redirects to your personal blog.
+                            </li>
+                            <li>
+                                <strong>Organisation Name:</strong> Displays instance details on hover (if in a sandbox, it shows the sandbox name).
+                            </li>
+                            <li>
+                                <strong>Current User Details:</strong> The current user’s name is shown on a button; hovering over it reveals the user’s email.
+                            </li>
+                            <li>
+                                <strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible. If unpinned, the sidebar auto-slides back in 5 seconds; if pinned, it stays open.
+                            </li>
+                            <li>
+                                <strong>Settings:</strong>
+                                <ol>
+                                    <li><em>Disable Code Coverage Highlight:</em> By default in Classic Salesforce, code coverage is highlighted in green and red.</li>
+                                    <li><em>Sort Order for Apex (Classes &amp; Triggers):</em> Configure how Apex items are sorted.</li>
+                                    <li><em>Sort Order for Flows:</em> Configure the sorting order for flows.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <a href="#apex-0-7-2" class="back-to-top">Back to Top</a>
-      </div>
-      
-      <!-- Version 0.8 Documentation (copied from 0.7.2 for now, with the new Users section added) -->
-      <div class="version-content" id="version-0.8" style="display: block;">
-        <!-- Feature Navigation (Index) -->
-        <nav class="feature-nav">
-          <a href="#apex-0-8">Apex</a>
-          <a href="#flows-0-8">Flows</a>
-          <a href="#debug-0-8">Debug</a>
-          <a href="#apex-changes-0-8">Apex Changes</a>
-          <a href="#sites-0-8">Sites</a>
-          <a href="#branding-0-8">Branding</a>
-          <a href="#users-0-8">Users</a>
-          <a href="#codereview-0-8">Code Review</a>
-          <a href="#demo-0-8">Demo</a>
-          <a href="#changelog-0-8">Changelog</a>
-        </nav>
+                <!-- Interactive Demo Section -->
+                <section id="demo-0-7-2" class="feature-section">
+                    <h2>Interactive Demo</h2>
+                    <div class="demo-container">
+                        <p>Watch this short demo to see NavForce in action:</p>
+                        <iframe src="https://www.youtube.com/embed/q0b6B6fNanU" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </section>
 
-        <!-- Apex Section -->
-        <section id="apex-0-8" class="feature-section">
-          <h2>Apex</h2>
-          <div class="feature-description">
-            <p>Manage and test your Apex code with powerful search, refresh, and detailed view options.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive and will only search the item for which the filter is selected. For example, if neither the Apex Test Classes nor the Apex Trigger checkbox is selected, it will search only through Apex Classes (Non Test Classes). If you select Apex Test Classes, it searches only within those, and similarly for Apex Triggers.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, click the REFRESH icon to resync the data from your Salesforce org.
-              </li>
-              <li>
-                <strong>Apex Classes:</strong> This is the default view when the extension loads. It shows all the Apex Classes (non test classes) in the org. This list has three features:
-                <ol>
-                  <li><em>Covering Test Classes:</em> A toggle which, when expanded, shows all the Apex Test Classes covering this particular Apex Class.</li>
-                  <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Class to a new Page for Code Review. For More Details on Code review check Code review section.</li>
-                  <li><em>Other Details:</em> TBD – more details regarding the Apex Class.</li>
-                  <li><em>Test Coverage Percentage:</em> Displays the test coverage percentage of the Apex Class.</li>
-                </ol>
-              </li>
-              <li>
-                <strong>Test Class:</strong> A filter checkbox for showing all Apex Test Classes. This list has three features:
-                <ol>
-                  <li><em>Covered Class/Trigger:</em> A toggle which, when expanded, shows which Apex Classes and Apex Triggers this Apex Test Class is covering.</li>
-                  <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Test Class to a new Page for Code Review. For More Details on Code review check Code review section.</li>
-                  <li><em>Other Details:</em> TBD – more details regarding the Test Class.</li>
-                  <li><em>Run Test Class:</em> When clicked, runs the test class and shows the test results in the extension. The results display the Test Method Name with Pass/Fail status; clicking the status redirects to the detailed test result page.</li>
-                  <li><em>Run Test Class Status:</em> Right beside the Run Test Class Icon, test run status icon will be shown. It will show values Queued Processing, Aborted, Completed, Failed, Preparing and Holding</li>
-                </ol>
-              </li>
-              <li>
-                <strong>Triggers:</strong> A filter checkbox for showing all Apex Triggers. This list has three features:
-                <ol>
-                  <li><em>Covering Test Classes:</em> Displays which Apex Classes are covering this particular trigger.</li>
-                  <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Trigger to a new Page for Code Review. For More Details on Code review check Code review section.</li>
-                  <li><em>Other Details:</em> TBD – more details regarding the Apex Trigger.</li>
-                  <li><em>Test Coverage Percentage:</em> Shows the test coverage percentage of the Apex Trigger.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Changelog & Roadmap Section -->
+                <section id="changelog-0-7-2" class="feature-section">
+                    <h2>Changelog & Roadmap</h2>
+                    <div class="changelog">
+                        <ol>
+                            <li>
+                                <strong>Version 0.7.2:</strong> Latest features added including enhanced Apex, Flows, Debug views, and more.
+                            </li>
+                            <li>
+                                <strong>Planned:</strong> More detailed comparisons, enhanced user settings, and additional integrations.
+                            </li>
+                            <li>
+                                <strong>Bug Fixes:</strong> Ongoing improvements to stability and performance.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Flows Section -->
-        <section id="flows-0-8" class="feature-section">
-          <h2>Flows</h2>
-          <div class="feature-description">
-            <p>Effortlessly manage and view your flows with built-in search and refresh capabilities, along with detailed filters.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Flows. This search is case insensitive. By default, if no filter checkbox is selected, it will search only through Active Flows of all types. When a filter checkbox is selected, it searches only within that specific category.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Flows, click the REFRESH icon to resync the data from your Salesforce org.
-              </li>
-              <li>
-                <strong>All Active Flows:</strong> The default list when the Flows section is clicked. Clicking on any flow redirects to its details page. This list has several features:
-                <ol>
-                  <li><em>Inactive Checkbox Filter:</em> Toggle to show inactive flows.</li>
-                  <li><em>PB (Process Builders):</em> Lists all active Process Builders and redirects to the Process Builder page.</li>
-                  <li><em>AutoLaunched:</em> Lists all active AutoLaunched flows.</li>
-                  <li><em>Screen:</em> Lists all active Screen flows.</li>
-                  <li><em>Icons:</em> Two icons indicate the Process Type and Active/Inactive status.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <a href="#apex-0-7-2" class="back-to-top">Back to Top</a>
+            </div>
 
-        <!-- Debug Section -->
-        <section id="debug-0-8" class="feature-section">
-          <h2>Debug</h2>
-          <div class="feature-description">
-            <p>Easily track and analyze debug traces from your Salesforce org.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Debug Traces (case insensitive), specifically searching for TracedEntityId.Name.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If debug data isn’t updating, click the REFRESH icon to resync data from your Salesforce org.
-              </li>
-              <li>
-                <strong>All Debug Traces:</strong> Displays a default list of debug traces including information such as TracedEntityId.Name and Debug level. This list has three features:
-                <ol>
-                  <li><em>Information Icon:</em> When hovered over, shows the start and end dates of a debug trace.</li>
-                  <li><em>Tracking Icon:</em> Indicates whether the debug trace is actively tracking.</li>
-                  <li><em>Refresh TraceFlag Icon:</em> Refreshes the trace flag by 24 hours.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+            <!-- Version 0.8 Documentation (copied from 0.7.2 for now, with the new Users section added) -->
+            <div class="version-content" id="version-0.8" style="display: block;">
+                <!-- Feature Navigation (Index) -->
+                <nav class="feature-nav">
+                    <a href="#apex-0-8">Apex</a>
+                    <a href="#flows-0-8">Flows</a>
+                    <a href="#debug-0-8">Debug</a>
+                    <a href="#apex-changes-0-8">Apex Changes</a>
+                    <a href="#sites-0-8">Sites</a>
+                    <a href="#branding-0-8">Branding</a>
+                    <a href="#users-0-8">Users</a>
+                    <a href="#codereview-0-8">Code Review</a>
+                    <a href="#demo-0-8">Demo</a>
+                    <a href="#changelog-0-8">Changelog</a>
+                </nav>
 
-        <!-- Apex Changes Section -->
-        <section id="apex-changes-0-8" class="feature-section">
-          <h2>Apex Changes</h2>
-          <div class="feature-description">
-            <p>Track changes in your Apex Classes with version control, enabling easy comparisons between different versions. Now this will not be shown in Production as ApexMembers only works in Developer and Sandbox Orgs</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Apex Classes whose versions are being tracked via ApexClassMember Changes. This search is case insensitive and looks for the Apex Class Name.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If data is not updating, click the REFRESH icon to resync. If data still doesn’t appear, it means the class isn’t being tracked.
-              </li>
-              <li>
-                <strong>Apex Changes List:</strong> Displays all Apex Classes whose versions are tracked. This list has two features:
-                <ol>
-                  <li><em>Toggle Version Icon:</em> View all versions that are being edited, saved, or compiled, along with details like Apex Version Number and Last Sync Date.</li>
-                  <li><em>Difference Check:</em> When two versions are selected, click 'Compare Diff' to view differences in color.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Apex Section -->
+                <section id="apex-0-8" class="feature-section">
+                    <h2>Apex</h2>
+                    <div class="feature-description">
+                        <p>Manage and test your Apex code with powerful search, refresh, and detailed view options.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive and will only search the item for which the filter is selected. For example, if neither the Apex Test Classes nor the Apex Trigger
+                                checkbox is selected, it will search only through Apex Classes (Non Test Classes). If you select Apex Test Classes, it searches only within those, and similarly for Apex Triggers.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>Apex Classes:</strong> This is the default view when the extension loads. It shows all the Apex Classes (non test classes) in the org. This list has three features:
+                                <ol>
+                                    <li><em>Covering Test Classes:</em> A toggle which, when expanded, shows all the Apex Test Classes covering this particular Apex Class.</li>
+                                    <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Class to a new Page for Code Review. For More Details on Code review check Code review section.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Apex Class.</li>
+                                    <li><em>Test Coverage Percentage:</em> Displays the test coverage percentage of the Apex Class.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Test Class:</strong> A filter checkbox for showing all Apex Test Classes. This list has three features:
+                                <ol>
+                                    <li><em>Covered Class/Trigger:</em> A toggle which, when expanded, shows which Apex Classes and Apex Triggers this Apex Test Class is covering.</li>
+                                    <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Test Class to a new Page for Code Review. For More Details on Code review check Code review section.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Test Class.</li>
+                                    <li><em>Run Test Class:</em> When clicked, runs the test class and shows the test results in the extension. The results display the Test Method Name with Pass/Fail status; clicking the status redirects to the detailed test
+                                        result page.</li>
+                                    <li><em>Run Test Class Status:</em> Right beside the Run Test Class Icon, test run status icon will be shown. It will show values Queued Processing, Aborted, Completed, Failed, Preparing and Holding</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Triggers:</strong> A filter checkbox for showing all Apex Triggers. This list has three features:
+                                <ol>
+                                    <li><em>Covering Test Classes:</em> Displays which Apex Classes are covering this particular trigger.</li>
+                                    <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Trigger to a new Page for Code Review. For More Details on Code review check Code review section.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Apex Trigger.</li>
+                                    <li><em>Test Coverage Percentage:</em> Shows the test coverage percentage of the Apex Trigger.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Sites Section -->
-        <section id="sites-0-8" class="feature-section">
-          <h2>Sites</h2>
-          <div class="feature-description">
-            <p>View and manage all Experience Sites in your org with direct links to both the Builder and Workspace.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Sites. This search is case insensitive and looks for the Site Name.
-              </li>
-              <li>
-                <strong>Refresh/Resync Icon:</strong> If site data isn’t updating, click the REFRESH icon to resync the data from your Salesforce org.
-              </li>
-              <li>
-                <strong>All Experience Sites:</strong> Displays a default list of Experience Sites. This list has one feature:
-                <ol>
-                  <li><em>Site Name with Two Links:</em> Each site displays two links—one for the Builder (redirects to the Builder page) and one for the Workspace.</li>
-                </ol>
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Flows Section -->
+                <section id="flows-0-8" class="feature-section">
+                    <h2>Flows</h2>
+                    <div class="feature-description">
+                        <p>Effortlessly manage and view your flows with built-in search and refresh capabilities, along with detailed filters.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Flows. This search is case insensitive. By default, if no filter checkbox is selected, it will search only through Active Flows of all types. When a filter checkbox is
+                                selected, it searches only within that specific category.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Flows, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Active Flows:</strong> The default list when the Flows section is clicked. Clicking on any flow redirects to its details page. This list has several features:
+                                <ol>
+                                    <li><em>Inactive Checkbox Filter:</em> Toggle to show inactive flows.</li>
+                                    <li><em>PB (Process Builders):</em> Lists all active Process Builders and redirects to the Process Builder page.</li>
+                                    <li><em>AutoLaunched:</em> Lists all active AutoLaunched flows.</li>
+                                    <li><em>Screen:</em> Lists all active Screen flows.</li>
+                                    <li><em>Icons:</em> Two icons indicate the Process Type and Active/Inactive status.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <!-- Branding Section -->
-        <section id="branding-0-8" class="feature-section">
-          <h2>Branding</h2>
-          <div class="feature-description">
-            <p>Customize the look and feel of the extension with your branding details.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Navforce Logo:</strong> Redirects to my personal blog.
-              </li>
-              <li>
-                <strong>Navforce:</strong> Redirects to Documentation Page.
-              </li>
-              <li>
-                <strong>Organisation Name:</strong> Displays instance details on hover (if in a sandbox, it shows the sandbox name).
-              </li>
-              <li>
-                <strong>Current User Details:</strong> The current user’s name is shown on a button; hovering over it reveals the user’s email.
-              </li>
-              <li>
-                <strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible. If unpinned, the sidebar auto-slides back in 5 seconds; if pinned, it stays open.
-              </li>
-              <li><strong>Settings:</strong>
-                <ul>
-                  <li><em>General Settings</li>
+                <!-- Debug Section -->
+                <section id="debug-0-8" class="feature-section">
+                    <h2>Debug</h2>
+                    <div class="feature-description">
+                        <p>Easily track and analyze debug traces from your Salesforce org.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Debug Traces (case insensitive), specifically searching for TracedEntityId.Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If debug data isn’t updating, click the REFRESH icon to resync data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Debug Traces:</strong> Displays a default list of debug traces including information such as TracedEntityId.Name and Debug level. This list has three features:
+                                <ol>
+                                    <li><em>Information Icon:</em> When hovered over, shows the start and end dates of a debug trace.</li>
+                                    <li><em>Tracking Icon:</em> Indicates whether the debug trace is actively tracking.</li>
+                                    <li><em>Refresh TraceFlag Icon:</em> Refreshes the trace flag by 24 hours.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Apex Changes Section -->
+                <section id="apex-changes-0-8" class="feature-section">
+                    <h2>Apex Changes</h2>
+                    <div class="feature-description">
+                        <p>Track changes in your Apex Classes with version control, enabling easy comparisons between different versions. Now this will not be shown in Production as ApexMembers only works in Developer and Sandbox Orgs</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Apex Classes whose versions are being tracked via ApexClassMember Changes. This search is case insensitive and looks for the Apex Class Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If data is not updating, click the REFRESH icon to resync. If data still doesn’t appear, it means the class isn’t being tracked.
+                            </li>
+                            <li>
+                                <strong>Apex Changes List:</strong> Displays all Apex Classes whose versions are tracked. This list has two features:
+                                <ol>
+                                    <li><em>Toggle Version Icon:</em> View all versions that are being edited, saved, or compiled, along with details like Apex Version Number and Last Sync Date.</li>
+                                    <li><em>Difference Check:</em> When two versions are selected, click 'Compare Diff' to view differences in color.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Sites Section -->
+                <section id="sites-0-8" class="feature-section">
+                    <h2>Sites</h2>
+                    <div class="feature-description">
+                        <p>View and manage all Experience Sites in your org with direct links to both the Builder and Workspace.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Sites. This search is case insensitive and looks for the Site Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If site data isn’t updating, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Experience Sites:</strong> Displays a default list of Experience Sites. This list has one feature:
+                                <ol>
+                                    <li><em>Site Name with Two Links:</em> Each site displays two links—one for the Builder (redirects to the Builder page) and one for the Workspace.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Branding Section -->
+                <section id="branding-0-8" class="feature-section">
+                    <h2>Branding</h2>
+                    <div class="feature-description">
+                        <p>Customize the look and feel of the extension with your branding details.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Navforce Logo:</strong> Redirects to my personal blog.
+                            </li>
+                            <li>
+                                <strong>Navforce:</strong> Redirects to Documentation Page.
+                            </li>
+                            <li>
+                                <strong>Organisation Name:</strong> Displays instance details on hover (if in a sandbox, it shows the sandbox name).
+                            </li>
+                            <li>
+                                <strong>Current User Details:</strong> The current user’s name is shown on a button; hovering over it reveals the user’s email.
+                            </li>
+                            <li>
+                                <strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible. If unpinned, the sidebar auto-slides back in 5 seconds; if pinned, it stays open.
+                            </li>
+                            <li><strong>Settings:</strong>
+                                <ul>
+                                    <li><em>General Settings</li>
                     <ol>
                       <li><em>Disable Code Coverage Highlight:</em> By default in Classic Salesforce, code coverage is highlighted in green and red.</li>
-                      <li><em>Disable Code Review Feature (Hides Icon):</em> By default in Classic Salesforce, code review icon is shown, use this setting to toggle it On/Off</li>
-                      <li><em>Sort Order for Apex (Classes &amp; Triggers):</em> Configure how Apex items are sorted.</li>
-                      <li><em>Sort Order for Flows:</em> Configure the sorting order for flows.</li>
-                    </ol>
-                    <li><em>Code Review Rules Settings</li>
+                                    <li><em>Disable Code Review Feature (Hides Icon):</em> By default in Classic Salesforce, code review icon is shown, use this setting to toggle it On/Off</li>
+                                    <li><em>Sort Order for Apex (Classes &amp; Triggers):</em> Configure how Apex items are sorted.</li>
+                                    <li><em>Sort Order for Flows:</em> Configure the sorting order for flows.</li>
+                        </ol>
+                        <li><em>Code Review Rules Settings</li>
                       <ol>
                         <li><em>Enable/Disable All Rules Below:</em> Select/Deselect all below rules</li>
                         <li><em>Enable Rules</em> Only Rules that are checked will run for code reivew</li>
-                      </ol>
-                <ul>
-              </li>
-            </ol>
-          </div>
-        </section>
+                        </ol>
+                        <ul>
+                            </li>
+                            </ol>
+                    </div>
+                </section>
 
-        <!-- Users Section -->
-        <section id="users-0-8" class="feature-section">
-          <h2>Users</h2>
-          <div class="feature-description">
-            <p>Search through All users and filter out your results based on Username or Name.</p>
-          </div>
-          <div class="feature-details">
-            <ol>
-              <li>
-                <strong>Search Bar:</strong> Quickly search through Users. This search is case insensitive and looks for users via Username or Name.
-              </li>
-              <li>
-                <strong>User Redirect:</strong> On clicking a user, it opens a new tab for that user's details page.
-              </li>
-              <li>
-                <strong>Active/Inactive:</strong> Active Users will have a green background and Inactive users will display in grey.
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Users Section -->
+                <section id="users-0-8" class="feature-section">
+                    <h2>Users</h2>
+                    <div class="feature-description">
+                        <p>Search through All users and filter out your results based on Username or Name.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol>
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Users. This search is case insensitive and looks for users via Username or Name.
+                            </li>
+                            <li>
+                                <strong>User Redirect:</strong> On clicking a user, it opens a new tab for that user's details page.
+                            </li>
+                            <li>
+                                <strong>Active/Inactive:</strong> Active Users will have a green background and Inactive users will display in grey.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <section id="codereview-0-8" class="feature-section">
-          <h2>Code Review [BETA]</h2>
-          <div class="feature-description">
-            <p>Code Review is a Code Reviewing tool for Apex. It is based upon Apex PMD rules. I have tried to implement these rules using REGEX in Javascript. With this you don't need to use VS code for
-              running the PMD. You can one click code review on the browser itself. You can enable or disable the code review icon from Settings. Also you can explicitly toggle rules from Settings as well.
-              I will more details in coming weeks. NOTE that this is still in beta and might false flag some parts of code. Dont take it for Granted. </p>
-          </div>
-        </section>
+                <section id="codereview-0-8" class="feature-section">
+                    <h2>Code Review [BETA]</h2>
+                    <div class="feature-description">
+                        <p>Code Review is a Code Reviewing tool for Apex. It is based upon Apex PMD rules. I have tried to implement these rules using REGEX in Javascript. With this you don't need to use VS code for running the PMD. You can one click code
+                            review on the browser itself. You can enable or disable the code review icon from Settings. Also you can explicitly toggle rules from Settings as well. I will more details in coming weeks. NOTE that this is still in beta and
+                            might false flag some parts of code. Dont take it for Granted. </p>
+                    </div>
+                </section>
 
-        <!-- Interactive Demo Section -->
-        <section id="demo-0-8" class="feature-section">
-          <h2>Interactive Demo</h2>
-          <div class="demo-container">
-            <p>Watch this short demo to see NavForce in action:</p>
-            <iframe src="https://www.youtube.com/embed/h2K8svKIkns?si=NL5NIFfsbfVwp95k" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </section>
+                <!-- Interactive Demo Section -->
+                <section id="demo-0-8" class="feature-section">
+                    <h2>Interactive Demo</h2>
+                    <div class="demo-container">
+                        <p>Watch this short demo to see NavForce in action:</p>
+                        <iframe src="https://www.youtube.com/embed/h2K8svKIkns?si=NL5NIFfsbfVwp95k" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </section>
 
-        <!-- Changelog & Roadmap Section -->
-        <section id="changelog-0-8" class="feature-section">
-          <h2>Changelog & Roadmap</h2>
-          <div class="changelog">
-            <ol>
-              <li>
-                <strong>Version 0.8:</strong> Added Code Review Functionality, User Section for User search, Test Class Run SVG icons, Apex Changes section will be hidder from Productions and UI Fixes.
-              </li>
-              <li>
-                <strong>Planned:</strong> OpenAI Integration for Code Review, Sites link redirect for communities, TBD sections of Apex - will add details on this.
-              </li>
-              <li>
-                <strong>Bug Fixes:</strong> UI improvements and UI Bug fixes.
-              </li>
-            </ol>
-          </div>
-        </section>
+                <!-- Changelog & Roadmap Section -->
+                <section id="changelog-0-8" class="feature-section">
+                    <h2>Changelog & Roadmap</h2>
+                    <div class="changelog">
+                        <ol>
+                            <li>
+                                <strong>Version 0.8:</strong> Added Code Review Functionality, User Section for User search, Test Class Run SVG icons, Apex Changes section will be hidder from Productions and UI Fixes.
+                            </li>
+                            <li>
+                                <strong>Planned:</strong> OpenAI Integration for Code Review, Sites link redirect for communities, TBD sections of Apex - will add details on this.
+                            </li>
+                            <li>
+                                <strong>Bug Fixes:</strong> UI improvements and UI Bug fixes.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
 
-        <a href="#apex-0-8" class="back-to-top">Back to Top</a>
-      </div>
+                <a href="#apex-0-8" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div class="version-content" id="version-0.9" style="display: block;">
+                <!-- Feature Navigation (Index) -->
+                <nav class="feature-nav">
+                    <a href="#apex-0-9">Apex</a>
+                    <a href="#flows-0-9">Flows</a>
+                    <a href="#debug-0-9">Debug</a>
+                    <a href="#apex-changes-0-9">Apex Changes</a>
+                    <a href="#sites-0-9">Sites</a>
+                    <a href="#branding-0-9">Branding</a>
+                    <a href="#users-0-9">Users</a>
+                    <a href="#auditlog-0-9">Audit Logs</a>
+                    <a href="#demo-0-9">Demo</a>
+                    <a href="#changelog-0-9">Changelog</a>
+                </nav>
+
+                <!-- Apex Section -->
+                <section id="apex-0-9" class="feature-section">
+                    <h2>Apex</h2>
+                    <div class="feature-description">
+                        <p>Manage and test your Apex code with powerful search, refresh, and detailed view options.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Apex. This search is case insensitive and will only search the item for which the filter is selected. For example, if neither the Apex Test Classes nor the Apex Trigger
+                                checkbox is selected, it will search only through Apex Classes (Non Test Classes). If you select Apex Test Classes, it searches only within those, and similarly for Apex Triggers.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Apex, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>Apex Classes:</strong> This is the default view when the extension loads. It shows all the Apex Classes (non test classes) in the org. This list has three features:
+                                <ol>
+                                    <li><em>Covering Test Classes:</em> A toggle which, when expanded, shows all the Apex Test Classes covering this particular Apex Class.</li>
+                                    <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Class to a new Page for Code Review. For More Details on Code review check Code review section.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Apex Class.</li>
+                                    <li><em>Test Coverage Percentage:</em> Displays the test coverage percentage of the Apex Class.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Test Class:</strong> A filter checkbox for showing all Apex Test Classes. This list has three features:
+                                <ol>
+                                    <li><em>Covered Class/Trigger:</em> A toggle which, when expanded, shows which Apex Classes and Apex Triggers this Apex Test Class is covering.</li>
+                                    <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Test Class to a new Page for Code Review. For More Details on Code review check Code review section.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Test Class.</li>
+                                    <li><em>Run Test Class:</em> When clicked, runs the test class and shows the test results in the extension. The results display the Test Method Name with Pass/Fail status; clicking the status redirects to the detailed test
+                                        result page.</li>
+                                    <li><em>Run Test Class Status:</em> Right beside the Run Test Class Icon, test run status icon will be shown. It will show values Queued Processing, Aborted, Completed, Failed, Preparing and Holding</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <strong>Triggers:</strong> A filter checkbox for showing all Apex Triggers. This list has three features:
+                                <ol>
+                                    <li><em>Covering Test Classes:</em> Displays which Apex Classes are covering this particular trigger.</li>
+                                    <li><em>Open Code Rview:</em> When Clicked, it will open the Apex Trigger to a new Page for Code Review. For More Details on Code review check Code review section.</li>
+                                    <li><em>Other Details:</em> TBD – more details regarding the Apex Trigger.</li>
+                                    <li><em>Test Coverage Percentage:</em> Shows the test coverage percentage of the Apex Trigger.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Flows Section -->
+                <section id="flows-0-9" class="feature-section">
+                    <h2>Flows</h2>
+                    <div class="feature-description">
+                        <p>Effortlessly manage and view your flows with built-in search and refresh capabilities, along with detailed filters.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Flows. This search is case insensitive. By default, if no filter checkbox is selected, it will search only through Active Flows of all types. When a filter checkbox is
+                                selected, it searches only within that specific category.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If you see the data is not picking up your Flows, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Active Flows:</strong> The default list when the Flows section is clicked. Clicking on any flow redirects to its details page. This list has several features:
+                                <ol>
+                                    <li><em>Inactive Checkbox Filter:</em> Toggle to show inactive flows.</li>
+                                    <li><em>PB (Process Builders):</em> Lists all active Process Builders and redirects to the Process Builder page.</li>
+                                    <li><em>AutoLaunched:</em> Lists all active AutoLaunched flows.</li>
+                                    <li><em>Screen:</em> Lists all active Screen flows.</li>
+                                    <li><em>Icons:</em> Two icons indicate the Process Type and Active/Inactive status.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Debug Section -->
+                <section id="debug-0-9" class="feature-section">
+                    <h2>Debug</h2>
+                    <div class="feature-description">
+                        <p>Easily track and analyze debug traces from your Salesforce org.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Debug Traces (case insensitive), specifically searching for TracedEntityId.Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If debug data isn’t updating, click the REFRESH icon to resync data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Debug Traces:</strong> Displays a default list of debug traces including information such as TracedEntityId.Name and Debug level. This list has three features:
+                                <ol>
+                                    <li><em>Information Icon:</em> When hovered over, shows the start and end dates of a debug trace.</li>
+                                    <li><em>Tracking Icon:</em> Indicates whether the debug trace is actively tracking.</li>
+                                    <li><em>Refresh TraceFlag Icon:</em> Refreshes the trace flag by 24 hours.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Apex Changes Section -->
+                <section id="apex-changes-0-9" class="feature-section">
+                    <h2>Apex Changes</h2>
+                    <div class="feature-description">
+                        <p>Track changes in your Apex Classes with version control, enabling easy comparisons between different versions. Now this will not be shown in Production as ApexMembers only works in Developer and Sandbox Orgs</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Apex Classes whose versions are being tracked via ApexClassMember Changes. This search is case insensitive and looks for the Apex Class Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If data is not updating, click the REFRESH icon to resync. If data still doesn’t appear, it means the class isn’t being tracked.
+                            </li>
+                            <li>
+                                <strong>Apex Changes List:</strong> Displays all Apex Classes whose versions are tracked. This list has two features:
+                                <ol>
+                                    <li><em>Toggle Version Icon:</em> View all versions that are being edited, saved, or compiled, along with details like Apex Version Number and Last Sync Date.</li>
+                                    <li><em>Apex Changes Details:</em> On click, it will redirect to the detail page where you can see body of apex class.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Sites Section -->
+                <section id="sites-0-9" class="feature-section">
+                    <h2>Sites</h2>
+                    <div class="feature-description">
+                        <p>View and manage all Experience Sites in your org with direct links to both the Builder and Workspace.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Sites. This search is case insensitive and looks for the Site Name.
+                            </li>
+                            <li>
+                                <strong>Refresh/Resync Icon:</strong> If site data isn’t updating, click the REFRESH icon to resync the data from your Salesforce org.
+                            </li>
+                            <li>
+                                <strong>All Experience Sites:</strong> Displays a default list of Experience Sites. This list has one feature:
+                                <ol>
+                                    <li><em>Site Name with Two Links:</em> Each site displays two links—one for the Builder (redirects to the Builder page) and one for the Workspace.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Branding Section -->
+                <section id="branding-0-9" class="feature-section">
+                    <h2>Branding</h2>
+                    <div class="feature-description">
+                        <p>Customize the look and feel of the extension with your branding details.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Navforce Logo:</strong> Redirects to my personal blog.
+                            </li>
+                            <li>
+                                <strong>Navforce:</strong> Redirects to Documentation Page.
+                            </li>
+                            <li>
+                                <strong>Organisation Name:</strong> Displays instance details on hover (if in a sandbox, it shows the sandbox name).
+                            </li>
+                            <li>
+                                <strong>Current User Details:</strong> The current user’s name is shown on a button; hovering over it reveals the user’s email.
+                            </li>
+                            <li>
+                                <strong>Pin/Unpin:</strong> Toggle to keep the sidebar visible. If unpinned, the sidebar auto-slides back in 5 seconds; if pinned, it stays open.
+                            </li>
+                            <li><strong>Settings:</strong>
+                                <ol style="font-style: normal;">
+                                        <li><em>Disable Code Coverage Highlight:</em> By default in Classic Salesforce, code coverage is highlighted in green and red.</li>
+                                            <li><em>Sort Order for Apex (Classes &amp; Triggers):</em> Configure how Apex items are sorted.</li>
+                                            <li><em>Sort Order for Flows:</em> Configure the sorting order for flows.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Users Section -->
+                <section id="users-0-9" class="feature-section">
+                    <h2>Users</h2>
+                    <div class="feature-description">
+                        <p>Search through All users and filter out your results based on Username or Name.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Users. This search is case insensitive and looks for users via Username or Name.
+                            </li>
+                            <li>
+                                <strong>User Redirect:</strong> On clicking a user, it opens a new tab for that user's details page.
+                            </li>
+                            <li>
+                                <strong>Active/Inactive:</strong> Active Users will have a green background and Inactive users will display in grey.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Audit Log Section -->
+                <section id="auditlog-0-9" class="feature-section">
+                    <h2>Audit Log</h2>
+                    <div class="feature-description">
+                        <p>Displays Audit Trails. Only Shows 100 by default.</p>
+                    </div>
+                    <div class="feature-details">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Search Bar:</strong> Quickly search through Audit Trails. This search is case insensitive and looks for Audit Trails Action Name.
+                            </li>
+                            <li>
+                                <strong>Audit Trails Redirect:</strong> On clicking a Audit Trails, it opens a new tab for that Audit Trails details page.
+                            </li>
+                            <li>
+                                <strong>Show All:</strong> On Clicking of Show All, it redirects to a new page that shows all audit trail logs.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Interactive Demo Section -->
+                <section id="demo-0-9" class="feature-section">
+                    <h2>Interactive Demo</h2>
+                    <div class="demo-container">
+                        <p>Watch this short demo to see NavForce in action:</p>
+                        <iframe src="https://www.youtube.com/embed/h2K8svKIkns?si=NL5NIFfsbfVwp95k" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </section>
+
+                <!-- Changelog & Roadmap Section -->
+                <section id="changelog-0-9" class="feature-section">
+                    <h2>Changelog & Roadmap</h2>
+                    <div class="changelog">
+                        <ol style="font-style: normal;">
+                            <li>
+                                <strong>Version 0.9:</strong> Removed Code Review(regex sucks!!), Removed Apex Changes Comparisons and Code Comparisons.
+                            </li>
+                            <li>
+                                <strong>Planned:</strong> OpenAI Integration for Code Review, Sites link redirect for communities, TBD sections of Apex - will add details on this.
+                            </li>
+                            <li>
+                                <strong>Bug Fixes:</strong> UI improvements and UI Bug fixes.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <a href="#apex-0-9" class="back-to-top">Back to Top</a>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <footer>
-    <p>&copy; 2025 NavForce - Salesforce Navigator Documentation. All rights reserved.</p>
-  </footer>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      showVersion('0.8');
-    });
-  </script>
-  <!-- JavaScript for Theme Toggle with SVG Swap -->
-  <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    // SVG for light mode (when page is in light mode, clicking it will switch to dark mode)
-    const lightModeSVG = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-      <g id="SVGRepo_iconCarrier">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 3C2.23858 3 0 5.23858 0 8C0 10.7614 2.23858 13 5 13H11C13.7614 13 16 10.7614 16 8C16 5.23858 13.7614 3 11 3H5ZM5 5C3.34315 5 2 6.34315 2 8C2 9.65685 3.34315 11 5 11C6.65685 11 8 9.65685 8 8C8 6.34315 6.65685 5 5 5Z" fill="#24bfb0"></path>
-      </g>
-    </svg>`;
-    // SVG for dark mode (when page is in dark mode, clicking it will revert to light mode)
-    const darkModeSVG = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-      <g id="SVGRepo_iconCarrier">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M11 3C13.7614 3 16 5.23858 16 8C16 10.7614 13.7614 13 11 13H5C2.23858 13 0 10.7614 0 8C0 5.23858 2.23858 3 5 3H11ZM11 5C12.6569 5 14 6.34315 14 8C14 9.65685 12.6569 11 11 11C9.34315 11 8 9.65685 8 8C8 6.34315 9.34315 5 11 5Z" fill="#24bfb0"></path>
-      </g>
-    </svg>`;
-    // Initialize the button with the lightModeSVG (since page loads in light mode)
-    themeToggle.innerHTML = lightModeSVG;
-    
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      if(document.body.classList.contains('dark-mode')){
-        themeToggle.innerHTML = darkModeSVG;
-      } else {
+    <footer>
+        <p>&copy; 2025 NavForce - Salesforce Navigator Documentation. All rights reserved.</p>
+    </footer>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+          showVersion('0.9');
+        });
+    </script>
+    <!-- JavaScript for Theme Toggle with SVG Swap -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        // SVG for light mode (when page is in light mode, clicking it will switch to dark mode)
+        const lightModeSVG = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M5 3C2.23858 3 0 5.23858 0 8C0 10.7614 2.23858 13 5 13H11C13.7614 13 16 10.7614 16 8C16 5.23858 13.7614 3 11 3H5ZM5 5C3.34315 5 2 6.34315 2 8C2 9.65685 3.34315 11 5 11C6.65685 11 8 9.65685 8 8C8 6.34315 6.65685 5 5 5Z" fill="#24bfb0"></path>
+          </g>
+        </svg>`;
+        // SVG for dark mode (when page is in dark mode, clicking it will revert to light mode)
+        const darkModeSVG = `<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M11 3C13.7614 3 16 5.23858 16 8C16 10.7614 13.7614 13 11 13H5C2.23858 13 0 10.7614 0 8C0 5.23858 2.23858 3 5 3H11ZM11 5C12.6569 5 14 6.34315 14 8C14 9.65685 12.6569 11 11 11C9.34315 11 8 9.65685 8 8C8 6.34315 9.34315 5 11 5Z" fill="#24bfb0"></path>
+          </g>
+        </svg>`;
+        // Initialize the button with the lightModeSVG (since page loads in light mode)
         themeToggle.innerHTML = lightModeSVG;
-      }
-    });
-    
-    // Function to toggle version content visibility and update active state
-    function showVersion(version) {
-      // Hide all version content containers
-      const versions = document.getElementsByClassName('version-content');
-      for (let i = 0; i < versions.length; i++) {
-        versions[i].style.display = 'none';
-      }
-      // Show the selected version container
-      document.getElementById('version-' + version).style.display = 'block';
-      
-      // Update header version tag
-      document.getElementById('current-version-tag').innerText = 'Version ' + version;
-      
-      // Update active class in sidebar
-      const sidebarItems = document.querySelectorAll('.sidebar li');
-      sidebarItems.forEach(item => item.classList.remove('active'));
-      const links = document.querySelectorAll('.sidebar a');
-      links.forEach(link => {
-        if(link.innerText.trim() === version) {
-          link.parentElement.classList.add('active');
+        
+        themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if(document.body.classList.contains('dark-mode')){
+            themeToggle.innerHTML = darkModeSVG;
+          } else {
+            themeToggle.innerHTML = lightModeSVG;
+          }
+        });
+        
+        // Function to toggle version content visibility and update active state
+        function showVersion(version) {
+          // Hide all version content containers
+          const versions = document.getElementsByClassName('version-content');
+          for (let i = 0; i < versions.length; i++) {
+            versions[i].style.display = 'none';
+          }
+          // Show the selected version container
+          document.getElementById('version-' + version).style.display = 'block';
+          
+          // Update header version tag
+          document.getElementById('current-version-tag').innerText = 'Version ' + version;
+          
+          // Update active class in sidebar
+          const sidebarItems = document.querySelectorAll('.sidebar li');
+          sidebarItems.forEach(item => item.classList.remove('active'));
+          const links = document.querySelectorAll('.sidebar a');
+          links.forEach(link => {
+            if(link.innerText.trim() === version) {
+              link.parentElement.classList.add('active');
+            }
+          });
         }
-      });
-    }
-  </script>
+    </script>
 </body>
+
 </html>
