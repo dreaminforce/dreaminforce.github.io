@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kamal | Salesforce Builder & NavForce Creator</title>
+  <title>Kamal Thakur | Salesforce Technical Manager</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -32,7 +32,7 @@
     img { max-width: 100%; display: block; }
 
     .page {
-      padding: 28px clamp(20px, 4vw, 56px) 60px;
+      padding: 20px clamp(20px, 4vw, 56px) 56px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -42,7 +42,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
@@ -66,31 +66,13 @@
 
     .nav-actions {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       align-items: center;
       flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      font-family: 'Space Grotesk', sans-serif;
-      background: transparent;
-      border: 1px solid var(--stroke);
-      color: var(--ink);
-      padding: 10px 18px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active,
-    .tab-btn:hover {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
+      font-weight: 600;
     }
 
     .nav-link {
-      font-weight: 600;
       color: var(--accent-2);
       border-bottom: 2px solid transparent;
       transition: border-color 0.2s ease;
@@ -98,15 +80,12 @@
 
     .nav-link:hover { border-color: var(--accent-2); }
 
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-      gap: clamp(20px, 4vw, 48px);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: clamp(16px, 3vw, 32px);
       align-items: center;
-      margin-bottom: 40px;
+      margin-bottom: 28px;
     }
 
     .eyebrow {
@@ -129,13 +108,14 @@
       color: var(--muted);
       font-size: 1.1rem;
       line-height: 1.6;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
 
     .hero-actions {
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
+      margin-bottom: 6px;
     }
 
     .btn-primary,
@@ -169,6 +149,23 @@
       border-radius: 24px;
       padding: 24px;
       box-shadow: var(--shadow);
+      align-self: start;
+    }
+
+    .profile-photo {
+      width: clamp(150px, 22vw, 210px);
+      height: clamp(150px, 22vw, 210px);
+      border-radius: 50%;
+      overflow: hidden;
+      border: 6px solid #fff;
+      box-shadow: 0 18px 36px rgba(31, 28, 25, 0.2);
+      margin-bottom: 12px;
+    }
+
+    .profile-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .hero-card h3 {
@@ -193,23 +190,28 @@
       font-size: 0.95rem;
     }
 
-    .hero-card .inline-link {
-      display: inline-block;
-      margin-top: 16px;
-      font-weight: 600;
-      color: var(--accent-2);
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      font-family: inherit;
+    .section {
+      margin-bottom: 32px;
     }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+    }
+
+    .section-header p { color: var(--muted); }
 
     .section-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 24px;
-      margin-bottom: 32px;
     }
 
     .section-card {
@@ -220,13 +222,35 @@
       box-shadow: 0 16px 40px rgba(31, 28, 25, 0.08);
     }
 
-    .section-card h2 {
+    .section-card h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.2rem;
       margin-bottom: 12px;
     }
 
     .section-card p { color: var(--muted); line-height: 1.6; }
+
+    .section-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .hidden { display: none !important; }
+
+    body:not(.docs-only) .docs-section { display: none; }
+    body.docs-only .profile-content,
+    body.docs-only .site-header,
+    body.docs-only .footer { display: none; }
+
+    .list {
+      margin-top: 12px;
+      color: var(--muted);
+      display: grid;
+      gap: 10px;
+      line-height: 1.6;
+    }
 
     .tags {
       display: flex;
@@ -241,6 +265,70 @@
       border-radius: 999px;
       font-size: 0.85rem;
       background: #fff;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+    }
+
+    .impact {
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      text-align: center;
+      min-width: 0;
+    }
+
+    .impact strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .impact span {
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      overflow-wrap: normal;
+      word-break: normal;
+      text-wrap: balance;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .project-card a {
+      color: var(--accent-2);
+      font-weight: 600;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .contact-item {
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #fff;
+    }
+
+    .contact-item a {
+      color: var(--accent-2);
+      font-weight: 600;
+      word-break: break-word;
     }
 
     .footer {
@@ -262,9 +350,18 @@
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
       .section-grid { grid-template-columns: 1fr; }
+      .impact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 600px) {
+      .impact-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
     }
 
     /* Documentation styles (scoped) */
+    .docs-section { margin-top: 50px; }
+
     .docs {
       margin-top: 24px;
       border-radius: 24px;
@@ -380,17 +477,6 @@
       border-radius: 8px;
     }
 
-    .docs .feedback { text-align: center; padding: 20px; }
-    .docs .feedback a {
-      background: #4b6cb7;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    .docs .feedback a:hover { background: #182848; }
-
     .docs .back-to-top {
       display: block;
       width: 150px;
@@ -430,70 +516,250 @@
   <div class="page">
     <header class="site-header">
       <div class="brand">
-        <div class="brand-name">Kamal</div>
-        <div class="brand-tag">Salesforce builder and creator of NavForce</div>
+        <div class="brand-name">Kamal Thakur</div>
+        <div class="brand-tag">Technical Manager, Salesforce · Panchkula, India</div>
       </div>
-      <div class="nav-actions">
-        <button class="tab-btn active" data-tab-target="tab-home">Home</button>
-        <button class="tab-btn" data-tab-target="tab-docs">Documentation</button>
-        <a class="nav-link" href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank" rel="noopener">Chrome Web Store</a>
-      </div>
+      <nav class="nav-actions">
+        <a class="nav-link" href="#summary">Summary</a>
+        <a class="nav-link" href="#skills">Skills</a>
+        <a class="nav-link" href="#experience">Experience</a>
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#navforce-docs" data-action="show-docs">Docs</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
     </header>
 
     <main>
-      <section id="tab-home" class="tab-panel active">
-        <div class="hero">
-          <div class="hero-copy fade-up">
-            <div class="eyebrow">Salesforce and Chrome Extensions</div>
-            <h1>Building faster Salesforce workflows.</h1>
-            <p class="lead">I build tools that make Salesforce navigation quick and focused. My main project is NavForce, a Chrome extension that brings Apex, Flows, Debug, Users, and Audit Logs into one place.</p>
-            <div class="hero-actions">
-              <button class="btn-primary" data-tab-target="tab-docs">Read the documentation</button>
-              <a class="btn-secondary" href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank" rel="noopener">Get NavForce</a>
-            </div>
+      <div class="profile-content">
+      <section class="hero" id="summary">
+        <div class="hero-copy fade-up">
+          <div class="profile-photo">
+            <img src="https://media.licdn.com/dms/image/v2/D5603AQFx6RTOb8XTvw/profile-displayphoto-scale_400_400/B56ZoSJCLmJoAg-/0/1761240953743?e=1771459200&v=beta&t=sCTqfoRCh9rXljKiaCY3jE8dtSMJsh96qoiXdUVIv-g" alt="Kamal Thakur">
           </div>
-          <div class="hero-card fade-up">
-            <h3>NavForce - Salesforce Navigator</h3>
-            <p>Current release: v0.9</p>
-            <ul>
-              <li>Apex, Flows, Debug, Users, Audit Logs</li>
-              <li>Built for Salesforce admins and developers</li>
-              <li>Quick navigation with searchable lists</li>
-            </ul>
-            <button class="inline-link" data-tab-target="tab-docs">Explore full docs</button>
+          <div class="eyebrow">Salesforce Engineering & Architecture</div>
+          <h1>Building enterprise-grade Salesforce platforms and AI utilities.</h1>
+          <p class="lead">Salesforce Technical Manager with 8+ years leading cross-functional teams delivering platform-scale implementations across Apex, LWC, Flow, CRM Analytics, and integrations. Focused on performance, automation, and reliability.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#projects">View projects</a>
+            <a class="btn-secondary" href="#navforce-docs" data-action="show-docs">NavForce documentation</a>
           </div>
         </div>
-
-        <div class="section-grid">
-          <div class="section-card fade-up">
-            <h2>Focus</h2>
-            <p>Salesforce tooling and browser-based workflows that save time during daily org work.</p>
-            <div class="tags">
-              <span class="tag">Apex</span>
-              <span class="tag">Flows</span>
-              <span class="tag">Debug</span>
-              <span class="tag">Chrome Extensions</span>
-            </div>
-          </div>
-          <div class="section-card fade-up">
-            <h2>Featured work</h2>
-            <p>NavForce is a Salesforce Navigator extension with focused views for Apex, Flows, and admin utilities.</p>
-            <div class="tags">
-              <span class="tag">Documentation tab</span>
-              <span class="tag">Chrome Web Store</span>
-            </div>
+        <div class="hero-card fade-up">
+          <h3>Impact highlights</h3>
+          <p>Recent delivery outcomes across Salesforce programs.</p>
+          <div class="impact-grid">
+            <div class="impact"><strong>30%</strong><span>performance gains</span></div>
+            <div class="impact"><strong>50%</strong><span>turnaround reduction</span></div>
+            <div class="impact"><strong>90%</strong><span>automation time saved</span></div>
+            <div class="impact"><strong>97%</strong><span>test coverage</span></div>
           </div>
         </div>
-
-        <div class="section-card fade-up">
-          <h2>Notes</h2>
-          <p>This page is now a landing profile. Full product documentation lives in the Documentation tab.</p>
-        </div>
-
-        <div class="footer">© 2026 Kamal</div>
       </section>
 
-      <section id="tab-docs" class="tab-panel">
+      <section class="section">
+        <div class="section-header">
+          <h2>Professional summary</h2>
+          <p>Leading multi-org strategies, migrations, security architecture, and AI-enabled Salesforce workflows.</p>
+        </div>
+        <div class="section-grid">
+          <div class="section-card fade-up">
+            <h3>Leadership</h3>
+            <p>Own architecture and delivery for enterprise Salesforce platforms across Sales, Service, Experience, and AI workflows. Mentor an 18-person engineering team and set standards for Apex, LWC, Flow, CI/CD, and data governance.</p>
+          </div>
+          <div class="section-card fade-up">
+            <h3>Architecture</h3>
+            <p>Design integration architectures (API-led, event-driven), identity/SSO, environment strategy, and observability for platform-scale reliability and security.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="skills">
+        <div class="section-header">
+          <h2>Core skills</h2>
+          <p>Salesforce engineering, architecture, platforms, and AI/LLM tooling.</p>
+        </div>
+        <div class="section-grid">
+          <div class="section-card fade-up">
+            <h3>Salesforce engineering</h3>
+            <div class="tags">
+              <span class="tag">Apex</span>
+              <span class="tag">LWC</span>
+              <span class="tag">Aura</span>
+              <span class="tag">SOQL/SOSL</span>
+              <span class="tag">Flow</span>
+              <span class="tag">Platform Events</span>
+              <span class="tag">CDC</span>
+              <span class="tag">Security model</span>
+            </div>
+          </div>
+          <div class="section-card fade-up">
+            <h3>Architecture & integrations</h3>
+            <div class="tags">
+              <span class="tag">Org migrations</span>
+              <span class="tag">Data model design</span>
+              <span class="tag">API-led integrations</span>
+              <span class="tag">Identity/SSO</span>
+              <span class="tag">MuleSoft</span>
+              <span class="tag">AWS</span>
+              <span class="tag">Observability</span>
+            </div>
+          </div>
+          <div class="section-card fade-up">
+            <h3>Platforms & tools</h3>
+            <div class="tags">
+              <span class="tag">Sales Cloud</span>
+              <span class="tag">Service Cloud</span>
+              <span class="tag">Experience Cloud</span>
+              <span class="tag">CRM Analytics</span>
+              <span class="tag">DevOps Center</span>
+              <span class="tag">Salesforce CLI</span>
+              <span class="tag">n8n</span>
+              <span class="tag">Zapier</span>
+            </div>
+          </div>
+          <div class="section-card fade-up">
+            <h3>AI/LLM</h3>
+            <div class="tags">
+              <span class="tag">OpenAI APIs</span>
+              <span class="tag">Gemini APIs</span>
+              <span class="tag">Bedrock</span>
+              <span class="tag">Prompt engineering</span>
+              <span class="tag">Function calling</span>
+              <span class="tag">Agentic workflows</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="experience">
+        <div class="section-header">
+          <h2>Experience</h2>
+          <p>Enterprise Salesforce leadership and delivery.</p>
+        </div>
+        <div class="section-card fade-up">
+          <h3>Grazitti Interactive — Technical Manager, Salesforce</h3>
+          <p class="lead" style="margin-bottom: 12px;">2017–Present</p>
+          <div class="list">
+            <div>Own architecture, delivery, and operational integrity of multiple enterprise Salesforce platforms across 30+ implementations.</div>
+            <div>Lead and mentor a team of 18 engineers, setting standards for Apex, LWC, Flow, CI/CD, security model, and data governance.</div>
+            <div>Drive modernization initiatives including Workflow Rules/Process Builder migration to Flow, trigger refactoring, and performance tuning.</div>
+            <div>Deliver production solutions integrating Salesforce Scheduler, DevOps Center, AWS Cognito, and LLM-powered workflows.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-header">
+          <h2>Projects & impact</h2>
+          <p>Featured products and anonymized program outcomes (no client names).</p>
+        </div>
+        <div class="section-grid">
+          <div class="section-card project-card fade-up">
+            <h3>NavForce — Salesforce Navigator (Chrome Extension)</h3>
+            <p>Quick navigation for Apex, Flows, Debug, Users, and Audit Logs in one focused UI.</p>
+            <a href="#navforce-docs" data-action="show-docs">Read documentation →</a>
+            <a href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank" rel="noopener">Chrome Web Store →</a>
+          </div>
+          <div class="section-card project-card fade-up">
+            <h3>Autopex</h3>
+            <p>AI utility for natural-language to SOQL/DML, metadata operations, and Salesforce admin tasks.</p>
+            <a href="#contact">Request demo →</a>
+          </div>
+          <div class="section-card project-card fade-up">
+            <h3>AI Utilities</h3>
+            <p>Error Log AI, Salesforce Permission Helper, and AI Trust Layer for safe LLM workflows.</p>
+            <a href="#contact">Share interest →</a>
+          </div>
+          <div class="section-card fade-up">
+            <h3>Program outcomes</h3>
+            <div class="list">
+              <div>Rebuilt automation frameworks to deliver 30% performance gains and 97% test coverage.</div>
+              <div>Implemented identity/SSO and integration pipelines reducing invoice processing by 30%.</div>
+              <div>Optimized Apex + Flow to cut automation execution time by 90%.</div>
+              <div>Led org consolidation strategy and migration planning across multi-org environments.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Education</h2>
+          <p>Computer Science & Engineering.</p>
+        </div>
+        <div class="section-card fade-up">
+          <h3>HPT University — Mandi, Himachal Pradesh</h3>
+          <p>Bachelor of Technology, Computer Science and Engineering (2011–2016)</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Certifications & awards</h2>
+          <p>Salesforce certifications and recognition.</p>
+        </div>
+        <div class="section-grid">
+          <div class="section-card fade-up">
+            <h3>Salesforce certifications</h3>
+            <div class="list">
+              <div>Administrator </div>
+              <div>Experience Cloud Consultant</div>
+              <div>Sales Cloud Consultant</div>
+              <div>CRM Analytics and Einstein Discovery Consultant</div>
+              <div>Platform App Builder</div>
+              <div>CPQ Specialist</div>
+              <div>Data Cloud Consultant</div>
+              <div>Platform Developer I</div>
+              <div>Associate</div>
+              <div>Agentforce Specialist</div>
+            </div>
+          </div>
+          <div class="section-card fade-up">
+            <h3>Awards</h3>
+            <div class="list">
+              <div>Employee of the Month (2019)</div>
+              <div>Most Valuable Professional (2024)</div>
+              <div>Awarded a new car for exceptional performance (2024)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header">
+          <h2>Contact & links</h2>
+          <p>Replace these sample links with your updated profiles.</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <strong>Email</strong>
+            <div><a href="mailto:kamal.thakur.dev16@gmail.com">kamal.thakur.dev16@gmail.com</a></div>
+          </div>
+          <div class="contact-item">
+            <strong>Portfolio</strong>
+            <div><a href="https://dreaminforce.github.io/" target="_blank" rel="noopener">https://dreaminforce.github.io/</a></div>
+          </div>
+          <div class="contact-item">
+            <strong>GitHub</strong>
+            <div><a href="https://github.com/dreaminforce" target="_blank" rel="noopener">https://github.com/dreaminforce</a></div>
+          </div>
+          <div class="contact-item">
+            <strong>LinkedIn</strong>
+            <div><a href="https://www.linkedin.com/in/kamalthakursfdc/" target="_blank" rel="noopener">https://www.linkedin.com/in/kamalthakursfdc/</a></div>
+          </div>
+        </div>
+      </section>
+      </div>
+
+      <section class="docs-section" id="navforce-docs">
+        <div class="section-header">
+          <h2>NavForce documentation</h2>
+          <p>Full feature documentation for the Chrome extension.</p>
+          <div class="section-actions">
+            <button class="btn-secondary" type="button" data-action="show-profile">Back to profile</button>
+            <a class="btn-primary" href="https://chromewebstore.google.com/detail/navforce-salesforce-navig/dnmaiebaccplcnlapfgjhpahogddcejl" target="_blank" rel="noopener">Get NavForce</a>
+          </div>
+        </div>
         <div class="docs">
           <header>
             <div class="header-left">
@@ -1253,6 +1519,8 @@
         </div>
       </section>
     </main>
+
+    <div class="footer">© 2026 Kamal Thakur</div>
   </div>
 
   <script>
@@ -1279,32 +1547,71 @@
       });
     }
 
-    function activateTab(targetId) {
-      const panels = document.querySelectorAll('.tab-panel');
-      panels.forEach(panel => panel.classList.remove('active'));
-      const target = document.getElementById(targetId);
-      if (target) {
-        target.classList.add('active');
-      }
-
-      const buttons = document.querySelectorAll('.tab-btn');
-      buttons.forEach(button => button.classList.remove('active'));
-      const activeButton = document.querySelector(`.tab-btn[data-tab-target="${targetId}"]`);
-      if (activeButton) {
-        activeButton.classList.add('active');
-      }
-
-      if (targetId === 'tab-docs') {
-        showVersion('0.9');
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       showVersion('0.9');
-      const tabTriggers = document.querySelectorAll('[data-tab-target]');
-      tabTriggers.forEach(trigger => {
-        trigger.addEventListener('click', () => activateTab(trigger.dataset.tabTarget));
+      const docTriggers = document.querySelectorAll('[data-action="show-docs"]');
+      const profileTriggers = document.querySelectorAll('[data-action="show-profile"]');
+
+      function showDocsView(options = {}) {
+        const { scroll = true, setHash = true, targetHash = window.location.hash } = options;
+        document.body.classList.add('docs-only');
+        if (setHash) {
+          history.replaceState(null, '', '#navforce-docs');
+        }
+        if (scroll) {
+          window.scrollTo(0, 0);
+        }
+        const target = targetHash ? document.querySelector(targetHash) : null;
+        const versionSection = target ? target.closest('.version-content') : null;
+        if (versionSection && versionSection.id) {
+          const version = versionSection.id.replace('version-', '');
+          showVersion(version);
+        } else {
+          showVersion('0.9');
+        }
+      }
+
+      function showProfileView(options = {}) {
+        const { scroll = true, setHash = true } = options;
+        document.body.classList.remove('docs-only');
+        if (setHash) {
+          history.replaceState(null, '', '#summary');
+        }
+        if (scroll) {
+          window.scrollTo(0, 0);
+        }
+      }
+
+      function isDocsHash(hash) {
+        if (!hash) return false;
+        const target = document.querySelector(hash);
+        return Boolean(target && target.closest('.docs-section'));
+      }
+
+      function handleHashChange() {
+        if (isDocsHash(window.location.hash)) {
+          showDocsView({ scroll: false, setHash: false, targetHash: window.location.hash });
+        } else {
+          showProfileView({ scroll: false, setHash: false });
+        }
+      }
+
+      docTriggers.forEach(trigger => {
+        trigger.addEventListener('click', event => {
+          event.preventDefault();
+          showDocsView();
+        });
       });
+
+      profileTriggers.forEach(trigger => {
+        trigger.addEventListener('click', event => {
+          event.preventDefault();
+          showProfileView();
+        });
+      });
+
+      handleHashChange();
+      window.addEventListener('hashchange', handleHashChange);
     });
   </script>
 </body>
