@@ -80,11 +80,25 @@
 
     .nav-link:hover { border-color: var(--accent-2); }
 
-    .hero {
+    .split-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
       gap: clamp(16px, 3vw, 32px);
-      align-items: center;
+      align-items: start;
+    }
+
+    .main-column,
+    .side-column {
+      min-width: 0;
+    }
+
+    .side-column {
+      display: grid;
+      gap: 24px;
+      align-content: start;
+    }
+
+    .hero {
       margin-bottom: 28px;
     }
 
@@ -262,36 +276,80 @@
       background: #fff;
     }
 
-    .impact-grid {
+    .cert-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
+      margin-top: 16px;
     }
 
-    .impact {
-      border: 1px solid var(--stroke);
-      border-radius: 16px;
-      padding: 16px;
-      background: #fff;
+    .cert-card {
+      position: relative;
+      display: grid;
+      gap: 12px;
+      justify-items: center;
       text-align: center;
-      min-width: 0;
+      padding: 16px 14px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--stroke);
+      box-shadow: 0 14px 30px rgba(31, 28, 25, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
     }
 
-    .impact strong {
+    .cert-card::before {
+      content: "";
+      position: absolute;
+      inset: -60% -30% auto;
+      height: 180%;
+      background: radial-gradient(circle, rgba(255, 122, 0, 0.18), transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .cert-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(31, 28, 25, 0.14);
+    }
+
+    .cert-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 1px dashed var(--stroke);
+      background: #f7f4ee;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 6px #fff;
+      z-index: 1;
+    }
+
+    .cert-logo img {
+      width: 78%;
+      height: 78%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 10px rgba(31, 28, 25, 0.18));
+    }
+
+    .cert-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      z-index: 1;
+    }
+
+    .skills-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .skills-stack h4 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.6rem;
-      display: block;
-      margin-bottom: 6px;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
     }
 
-    .impact span {
-      display: block;
-      font-size: 0.9rem;
-      line-height: 1.3;
-      overflow-wrap: normal;
-      word-break: normal;
-      text-wrap: balance;
-    }
+    .skills-stack .tags { margin-top: 0; }
 
     .project-card {
       display: flex;
@@ -343,14 +401,12 @@
     }
 
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
+      .split-layout { grid-template-columns: 1fr; }
       .section-grid { grid-template-columns: 1fr; }
-      .impact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 600px) {
-      .impact-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -374,29 +430,21 @@
 
     <main>
       <div class="profile-content">
-      <section class="hero" id="summary">
-        <div class="hero-copy fade-up">
-          <div class="profile-photo">
-            <img src="https://media.licdn.com/dms/image/v2/D5603AQFx6RTOb8XTvw/profile-displayphoto-scale_400_400/B56ZoSJCLmJoAg-/0/1761240953743?e=1771459200&v=beta&t=sCTqfoRCh9rXljKiaCY3jE8dtSMJsh96qoiXdUVIv-g" alt="Kamal Thakur">
-          </div>
-          <div class="eyebrow">Salesforce Engineering & Architecture</div>
-          <h1>Building enterprise-grade Salesforce platforms and AI utilities.</h1>
-          <p class="lead">Salesforce Technical Manager with 8+ years leading cross-functional teams delivering platform-scale implementations across Apex, LWC, Flow, CRM Analytics, and integrations. Focused on performance, automation, and reliability.</p>
-          <div class="hero-actions">
-            <a class="btn-primary" href="#projects">View projects</a>
-          </div>
-        </div>
-        <div class="hero-card fade-up">
-          <h3>Impact highlights</h3>
-          <p>Recent delivery outcomes across Salesforce programs.</p>
-          <div class="impact-grid">
-            <div class="impact"><strong>30%</strong><span>performance gains</span></div>
-            <div class="impact"><strong>50%</strong><span>turnaround reduction</span></div>
-            <div class="impact"><strong>90%</strong><span>automation time saved</span></div>
-            <div class="impact"><strong>97%</strong><span>test coverage</span></div>
-          </div>
-        </div>
-      </section>
+        <div class="split-layout">
+          <div class="main-column">
+            <section class="hero" id="summary">
+              <div class="hero-copy fade-up">
+                <div class="profile-photo">
+                  <img src="https://media.licdn.com/dms/image/v2/D5603AQFx6RTOb8XTvw/profile-displayphoto-scale_400_400/B56ZoSJCLmJoAg-/0/1761240953743?e=1771459200&v=beta&t=sCTqfoRCh9rXljKiaCY3jE8dtSMJsh96qoiXdUVIv-g" alt="Kamal Thakur">
+                </div>
+                <div class="eyebrow">Salesforce Engineering & Architecture</div>
+                <h1>Building enterprise-grade Salesforce platforms and AI utilities.</h1>
+                <p class="lead">Salesforce Technical Manager with 8+ years leading cross-functional teams delivering platform-scale implementations across Apex, LWC, Flow, CRM Analytics, and integrations. Focused on performance, automation, and reliability.</p>
+                <div class="hero-actions">
+                  <a class="btn-primary" href="#projects">View projects</a>
+                </div>
+              </div>
+            </section>
 
       <section class="section">
         <div class="section-header">
@@ -411,64 +459,6 @@
           <div class="section-card fade-up">
             <h3>Architecture</h3>
             <p>Design integration architectures (API-led, event-driven), identity/SSO, environment strategy, and observability for platform-scale reliability and security.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="skills">
-        <div class="section-header">
-          <h2>Core skills</h2>
-          <p>Salesforce engineering, architecture, platforms, and AI/LLM tooling.</p>
-        </div>
-        <div class="section-grid">
-          <div class="section-card fade-up">
-            <h3>Salesforce engineering</h3>
-            <div class="tags">
-              <span class="tag">Apex</span>
-              <span class="tag">LWC</span>
-              <span class="tag">Aura</span>
-              <span class="tag">SOQL/SOSL</span>
-              <span class="tag">Flow</span>
-              <span class="tag">Platform Events</span>
-              <span class="tag">CDC</span>
-              <span class="tag">Security model</span>
-            </div>
-          </div>
-          <div class="section-card fade-up">
-            <h3>Architecture & integrations</h3>
-            <div class="tags">
-              <span class="tag">Org migrations</span>
-              <span class="tag">Data model design</span>
-              <span class="tag">API-led integrations</span>
-              <span class="tag">Identity/SSO</span>
-              <span class="tag">MuleSoft</span>
-              <span class="tag">AWS</span>
-              <span class="tag">Observability</span>
-            </div>
-          </div>
-          <div class="section-card fade-up">
-            <h3>Platforms & tools</h3>
-            <div class="tags">
-              <span class="tag">Sales Cloud</span>
-              <span class="tag">Service Cloud</span>
-              <span class="tag">Experience Cloud</span>
-              <span class="tag">CRM Analytics</span>
-              <span class="tag">DevOps Center</span>
-              <span class="tag">Salesforce CLI</span>
-              <span class="tag">n8n</span>
-              <span class="tag">Zapier</span>
-            </div>
-          </div>
-          <div class="section-card fade-up">
-            <h3>AI/LLM</h3>
-            <div class="tags">
-              <span class="tag">OpenAI APIs</span>
-              <span class="tag">Gemini APIs</span>
-              <span class="tag">Bedrock</span>
-              <span class="tag">Prompt engineering</span>
-              <span class="tag">Function calling</span>
-              <span class="tag">Agentic workflows</span>
-            </div>
           </div>
         </div>
       </section>
@@ -537,32 +527,15 @@
 
       <section class="section">
         <div class="section-header">
-          <h2>Certifications & awards</h2>
-          <p>Salesforce certifications and recognition.</p>
+          <h2>Awards</h2>
+          <p>Recognition for delivery and impact.</p>
         </div>
-        <div class="section-grid">
-          <div class="section-card fade-up">
-            <h3>Salesforce certifications</h3>
-            <div class="list">
-              <div>Administrator </div>
-              <div>Experience Cloud Consultant</div>
-              <div>Sales Cloud Consultant</div>
-              <div>CRM Analytics and Einstein Discovery Consultant</div>
-              <div>Platform App Builder</div>
-              <div>CPQ Specialist</div>
-              <div>Data Cloud Consultant</div>
-              <div>Platform Developer I</div>
-              <div>Associate</div>
-              <div>Agentforce Specialist</div>
-            </div>
-          </div>
-          <div class="section-card fade-up">
-            <h3>Awards</h3>
-            <div class="list">
-              <div>Employee of the Month (2019)</div>
-              <div>Most Valuable Professional (2024)</div>
-              <div>Awarded a new car for exceptional performance (2024)</div>
-            </div>
+        <div class="section-card fade-up">
+          <h3>Awards</h3>
+          <div class="list">
+            <div>Employee of the Month (2019)</div>
+            <div>Most Valuable Professional at Grazitti Interactive(2024)</div>
+            <div>Awarded a new car for exceptional performance (2024)</div>
           </div>
         </div>
       </section>
@@ -591,6 +564,130 @@
           </div>
         </div>
       </section>
+          </div>
+          <aside class="side-column">
+            <div class="hero-card fade-up" id="skills">
+              <h3>Core skills</h3>
+              <p>Salesforce engineering, architecture, platforms, and AI/LLM tooling.</p>
+              <div class="skills-stack">
+                <div class="skill-group">
+                  <h4>Salesforce engineering</h4>
+                  <div class="tags">
+                    <span class="tag">Apex</span>
+                    <span class="tag">LWC</span>
+                    <span class="tag">Aura</span>
+                    <span class="tag">SOQL/SOSL</span>
+                    <span class="tag">Flow</span>
+                    <span class="tag">Platform Events</span>
+                    <span class="tag">CDC</span>
+                    <span class="tag">Security model</span>
+                  </div>
+                </div>
+                <div class="skill-group">
+                  <h4>Architecture & integrations</h4>
+                  <div class="tags">
+                    <span class="tag">Org migrations</span>
+                    <span class="tag">Data model design</span>
+                    <span class="tag">API-led integrations</span>
+                    <span class="tag">Identity/SSO</span>
+                    <span class="tag">MuleSoft</span>
+                    <span class="tag">AWS</span>
+                    <span class="tag">Observability</span>
+                  </div>
+                </div>
+                <div class="skill-group">
+                  <h4>Platforms & tools</h4>
+                  <div class="tags">
+                    <span class="tag">Sales Cloud</span>
+                    <span class="tag">Service Cloud</span>
+                    <span class="tag">Experience Cloud</span>
+                    <span class="tag">CRM Analytics</span>
+                    <span class="tag">DevOps Center</span>
+                    <span class="tag">Salesforce CLI</span>
+                    <span class="tag">n8n</span>
+                    <span class="tag">Zapier</span>
+                  </div>
+                </div>
+                <div class="skill-group">
+                  <h4>AI/LLM</h4>
+                  <div class="tags">
+                    <span class="tag">OpenAI APIs</span>
+                    <span class="tag">Gemini APIs</span>
+                    <span class="tag">Bedrock</span>
+                    <span class="tag">Prompt engineering</span>
+                    <span class="tag">Function calling</span>
+                    <span class="tag">Agentic workflows</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section-card fade-up">
+              <h3>Salesforce certifications</h3>
+              <div class="cert-grid">
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MAGlB&oid=00DF0000000gZsu&lastMod=17467806380000" alt="Salesforce Certified Platform Administrator" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Platform Administrator</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MAC4t&oid=00DF0000000gZsu&lastMod=1746777975000" alt="Salesforce Certified Experience Cloud Consultant" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Experience Cloud Consultant</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MAHu9&oid=00DF0000000gZsu&lastMod=1746781628000" alt="Salesforce Certified Sales Cloud Consultant" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Sales Cloud Consultant</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MACXt&oid=00DF0000000gZsu&lastMod=1746777701000" alt="Salesforce Certified CRM Analytics and Einstein Discovery Consultant" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">CRM Analytics &amp; Einstein Discovery</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MAEmf&oid=00DF0000000gZsu&lastMod=1746780791000" alt="Salesforce Certified Platform App Builder" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Platform App Builder</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MA8XV&oid=00DF0000000gZsu&lastMod=1746775710000" alt="Salesforce Certified CPQ Administrator" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">CPQ Administrator</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MACb7&oid=00DF0000000gZsu&lastMod=1746777787000" alt="Salesforce Certified Data Cloud Consultant" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Data Cloud Consultant</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MA9LY&oid=00DF0000000gZsu&lastMod=1746780949000" alt="Salesforce Certified Platform Developer" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Platform Developer</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000M9wJS&oid=00DF0000000gZsu&lastMod=17467726020000" alt="Salesforce Certified Platform Foundations" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Platform Foundations</figcaption>
+                </figure>
+                <figure class="cert-card">
+                  <div class="cert-logo">
+                    <img src="https://drm.my.salesforce.com/servlet/servlet.ImageServer?id=015Rf00000MA14b&oid=00DF0000000gZsu&lastMod=1746774124000" alt="Salesforce Certified Agentforce Specialist" loading="lazy">
+                  </div>
+                  <figcaption class="cert-title">Agentforce Specialist</figcaption>
+                </figure>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
 
